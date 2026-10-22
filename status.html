@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Token status · ReadyLane</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2211%22 fill=%22%23FFD24D%22/%3E%3Cpath d=%22M12 21l6 6 11-13%22 fill=%22none%22 stroke=%22%235A124C%22 stroke-width=%224%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+body{background:linear-gradient(180deg,var(--plum-deep) 0,var(--plum-deep) 230px,var(--bg) 230px)}
+.wrap{width:min(480px,94vw);margin:0 auto;padding:22px 0 60px}
+.top{color:#fff;margin-bottom:16px}
+.top .tk{font-size:3rem;font-weight:800;letter-spacing:-.02em;line-height:1}
+.panel{background:#fff;border-radius:20px;box-shadow:var(--shadow-lg);padding:18px}
+.picker{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.picker a{text-decoration:none}
+.lookup{display:flex;gap:8px;margin-top:14px}
+.lookup input{flex:1;font:inherit;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;text-transform:uppercase}
+</style>
+</head><body>
+<header id="nav"></header>
+<div class="wrap">
+ <div class="top" id="top"><div style="font-size:.8rem;opacity:.75">SmartQ Bank · ReadyLane · live token status</div><div class="tk" id="tkTitle">–</div><div id="tkSub" style="opacity:.85"></div></div>
+ <div class="panel"><div id="view"></div><div id="other"></div>
+  <form class="lookup" id="lookup"><input name="q" placeholder="Token no., e.g. C-12" aria-label="Token number"><button class="btn btn-plum btn-sm">View</button></form>
+  <p class="hint" id="ownHint" style="margin-top:12px">Want your own token? <a href="demo.html">Take one in the customer demo</a>.</p></div>
+ <p class="sim-note" style="justify-content:center;margin-top:14px">This is the page a customer opens by scanning the QR on their paper token. No app or login needed. Simulated data.</p>
+</div>
+<script src="assets/vendor/qrcode.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/engine.js"></script>
+<script src="assets/js/tokenview.js"></script>
+<script>
+const qs=new URLSearchParams(location.search);let want=(qs.get('t')||'').toUpperCase();
+const view=RL.TokenView(document.getElementById('view'),{paper:false,interactive:true,notify:true,againHref:'demo.html'});
+let lastOther='';
+function render(st){
+ let t=want?RL.find(want):RL.mine();
+ if(!want&&!t){ // no token given: show the latest active one so the page is never empty
+   t=st.tokens.filter(x=>x.state!=='served').sort((a,b)=>b.seq-a.seq)[0];}
+ const title=document.getElementById('tkTitle'),sub=document.getElementById('tkSub');
+ let other='';
+ if(!t){title.textContent=want||'–';sub.textContent='';view(st,null);
+   other='<div class="empty" style="padding:16px 4px">Token <b>'+RL.esc(want)+'</b> isn\'t active in this simulated branch. It may already be served, or it was issued on another device.</div>';}
+ else{title.textContent=t.id;sub.textContent=RL.SERVICES[t.service].name+(t.amount?' · '+RL.inr(t.amount):'')+(t.mine?' · your token':'');view(st,t);}
+ const act=st.tokens.filter(x=>x.state!=='served').sort((a,b)=>a.seq-b.seq);
+ other+='<div class="divider"></div><b style="font-size:.9rem">Check another token</b><div class="picker">'+act.map(x=>'<a href="?t='+x.id+'" class="chip '+RL.STATUS_CLASS[x.state]+'">'+x.id+(x.mine?' (you)':'')+'</a>').join('')+'</div>';
+ document.getElementById('ownHint').style.display=RL.mine()?'none':'';
+ if(other!==lastOther){document.getElementById('other').innerHTML=other;lastOther=other}
+}
+document.getElementById('lookup').onsubmit=e=>{e.preventDefault();const v=e.target.q.value.trim().toUpperCase();if(v)location.search='?t='+encodeURIComponent(v)};
+RL.onChange(render);RL.start();
+</script>
+</body></html>

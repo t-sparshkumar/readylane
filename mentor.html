@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bank mentor · ReadyLane</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2211%22 fill=%22%23FFD24D%22/%3E%3Cpath d=%22M12 21l6 6 11-13%22 fill=%22none%22 stroke=%22%235A124C%22 stroke-width=%224%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.m-grid{display:grid;grid-template-columns:1fr 300px;gap:22px;align-items:start;padding:28px 0 60px}
+@media (max-width:900px){.m-grid{grid-template-columns:1fr}}
+.chat{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;height:min(680px,78vh)}
+.chat-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:linear-gradient(135deg,var(--plum),var(--plum-2));color:#fff;flex:none}
+.avatar.h{background:linear-gradient(135deg,#14A06F,#0c7650)}
+.msgs{flex:1;overflow:auto;padding:18px;display:flex;flex-direction:column;gap:12px;background:#FCFAFC}
+.msg{max-width:82%;padding:11px 14px;border-radius:16px;font-size:.93rem;animation:fadeUp .3s ease both}
+.msg ul{margin:6px 0 4px;padding-left:18px}.msg li{margin:2px 0}
+.msg.bot{background:#fff;border:1px solid var(--line);border-bottom-left-radius:4px}
+.msg.human{background:#EAF8F2;border:1px solid #BFE8D6;border-bottom-left-radius:4px}
+.msg.me{align-self:flex-end;background:var(--plum);color:#fff;border-bottom-right-radius:4px}
+.msg.sys{align-self:center;background:transparent;color:var(--muted);font-size:.8rem;padding:2px}
+.msg .who{font-size:.72rem;font-weight:700;color:var(--muted);margin-bottom:3px}
+.msg .note{font-size:.75rem;color:var(--muted);margin-top:6px}
+.typing{display:inline-flex;gap:4px}.typing i{width:7px;height:7px;border-radius:50%;background:#bba9b6;animation:b 1s infinite}.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+@keyframes b{50%{transform:translateY(-4px);opacity:.5}}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:10px 14px;border-top:1px solid var(--line)}
+.chipbtn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font:inherit;font-size:.8rem;font-weight:600;color:var(--plum);cursor:pointer}
+.chipbtn:hover{border-color:var(--plum)}
+.compose{display:flex;gap:8px;padding:12px 14px;border-top:1px solid var(--line)}
+.compose input{flex:1;font:inherit;padding:12px 14px;border:1.5px solid var(--line);border-radius:999px}
+.compose input:focus{outline:none;border-color:var(--plum)}
+.side .card{margin-bottom:16px}
+.topic{display:block;width:100%;text-align:left;border:0;background:none;font:inherit;padding:7px 0;border-bottom:1px dashed var(--line);cursor:pointer;color:var(--ink);font-size:.9rem}
+.topic:hover{color:var(--plum)}
+</style>
+</head><body>
+<header id="nav"></header>
+<div class="dark"><div class="container page-head">
+ <span class="eyebrow light">Mentor / guide</span>
+ <h1 style="font-size:clamp(1.8rem,4vw,2.6rem)">Ask before you go: "What do I need to bring?"</h1>
+ <p class="muted">An in-browser assistant with a local knowledge base of common Indian bank services. It understands simple English and Hinglish, e.g. <i>"account kholna hai"</i> or <i>"75000 jama karna hai"</i>. Need a person? Hand over to a human branch mentor (simulated).</p>
+</div></div>
+<div class="container m-grid">
+ <div class="chat">
+  <div class="chat-head"><div class="avatar" id="av">RL</div><div><b id="who">ReadyLane Mentor</b><div class="muted" style="font-size:.8rem" id="whoSub">Instant answers · general guidance</div></div>
+   <button class="btn btn-sm btn-light" id="humanBtn" style="margin-left:auto">🙋 Talk to a human mentor</button></div>
+  <div class="msgs" id="msgs" aria-live="polite"></div>
+  <div class="chips" id="chips"></div>
+  <form class="compose" id="form"><input id="q" autocomplete="off" placeholder="Type your question… e.g. documents for home loan"><button class="btn btn-plum">Send</button></form>
+ </div>
+ <div class="side">
+  <div class="card"><h3>Popular topics</h3><div id="topics"></div></div>
+  <div class="card"><h3>Good to know</h3><p class="muted" style="font-size:.88rem;margin:0">Answers are general guidance. Limits and forms vary by bank, so confirm at your branch. The mentor never asks for your PIN, OTP or password.</p></div>
+ </div>
+</div>
+<footer id="footer"></footer>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/mentor-kb.js"></script>
+<script>
+const KB=window.MENTOR_KB,$=id=>document.getElementById(id),msgs=$('msgs');
+let human=false,lastTopic=null;
+function add(cls,html,who){const d=document.createElement('div');d.className='msg '+cls;d.innerHTML=(who?'<div class="who">'+who+'</div>':'')+html;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d}
+function typing(cb,ms){const d=add(human?'human':'bot','<span class="typing"><i></i><i></i><i></i></span>');setTimeout(()=>{d.remove();cb()},ms||650)}
+function norm(s){return ' '+s.toLowerCase().replace(/[₹,]/g,m=>m===','?'':' ').replace(/[^a-z0-9\u0900-\u097f\- ]/g,' ').replace(/\s+/g,' ')+' '}
+function match(q){
+ const n=norm(q);let best=null,score=0;
+ KB.forEach(e=>{let s=0;e.kw.forEach(k=>{const kk=norm(k).trim();if(!kk)return;
+   if(n.includes(' '+kk+' '))s+=kk.includes(' ')?3:2; else if(kk.length>4&&n.includes(kk))s+=1;});
+  if(s>score){score=s;best=e}});
+ // amount hints: "75000 jama" / "3 lakh nikalna"
+ return score>=2?best:null;
+}
+function amountNote(q,e){
+ const m=q.replace(/,/g,'').match(/(\d+(?:\.\d+)?)\s*(lakh|lac|l\b|k\b)?/i);if(!m)return '';
+ let v=parseFloat(m[1]);const u=(m[2]||'').toLowerCase();if(u.startsWith('la')||u==='l')v*=100000;else if(u==='k')v*=1000;
+ if(v<100)return '';
+ const amt='₹'+Math.round(v).toLocaleString('en-IN');
+ if(e.id==='deposit')return '<div class="note">For your amount ('+amt+'): '+(v>50000?'<b>PAN or Form 60 is required.</b>':'no PAN needed for a single-day cash deposit up to ₹50,000.')+'</div>';
+ if(e.id==='withdraw')return '<div class="note">For your amount ('+amt+'): '+(v>200000?'above the demo teller limit of ₹2,00,000, so <b>officer approval</b> is needed. ReadyLane requests it in advance.':'within the demo teller limit, so no officer approval is needed.')+'</div>';
+ if(e.id==='dd')return '<div class="note">For your amount ('+amt+'): '+(v>=50000?'<b>must be paid from your account or by cheque</b>, not cash.':'can be paid by account debit or cash.')+'</div>';
+ return '';
+}
+const GREET=/^(hi|hello|hey|namaste|namaskar|hii+|good (morning|afternoon|evening))\b/i;
+function answer(q){
+ if(GREET.test(q.trim())){add('bot','Namaste! 🙏 Ask me which documents you need for any bank service, or tap a topic below.','ReadyLane Mentor');return}
+ if(/\b(otp|pin|password|cvv)\b/i.test(q)&&/\b(share|send|give|tell|batao|bhejo)\b/i.test(q)){add('bot','<b>Never share your OTP, PIN, CVV or password</b> with anyone, including bank staff or this mentor. The bank will never ask for them.','ReadyLane Mentor');return}
+ const e=match(q);
+ if(e){lastTopic=e;add('bot',e.a+amountNote(q,e)+'<div class="note">General guidance. Please confirm bank-specific limits at your branch.</div>','ReadyLane Mentor · '+e.title);return}
+ add('bot','I\'m not sure about that one yet. Try one of these topics, or <b>talk to a human mentor</b>:<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">'+KB.slice(0,6).map(k=>'<button class="chipbtn" data-q="'+k.chip+'">'+k.chip+'</button>').join('')+'<button class="chipbtn" data-human="1">🙋 Human mentor</button></div>','ReadyLane Mentor');
+}
+const HUMAN_REPLIES=[
+ t=>'Thanks for waiting! I\'m Priya, a branch mentor at SmartQ Bank. '+(t?'I see you were asking about <b>'+t.title.toLowerCase()+'</b>. ':'')+'How can I help?',
+ ()=>'Understood. If you already have a token, I can add a note to it so the counter staff are prepared. You can also come to <b>Help Desk 1</b> near the entrance.',
+ ()=>'Sure. Bring the original documents along with one self-attested photocopy each. If anything is missing, ReadyLane will tell you before you reach the counter.',
+ ()=>'Happy to help! Anything else? You can switch back to instant answers at any time.'];
+let hi=0;
+function goHuman(){
+ if(human)return;human=true;$('humanBtn').textContent='↩ Back to instant answers';
+ add('sys','Connecting you to a branch mentor… (simulated, no real person or data is involved)');
+ setTimeout(()=>{$('av').textContent='PS';$('av').classList.add('h');$('who').textContent='Priya S. · Branch mentor';$('whoSub').textContent='SmartQ Bank · typically replies in 1–2 min (simulated)';
+  add('sys','Priya S. joined the chat');typing(()=>add('human',HUMAN_REPLIES[0](lastTopic),'Priya S. · Branch mentor'),900);hi=1},1200);
+}
+function goBot(){human=false;$('humanBtn').textContent='🙋 Talk to a human mentor';$('av').textContent='RL';$('av').classList.remove('h');$('who').textContent='ReadyLane Mentor';$('whoSub').textContent='Instant answers · general guidance';add('sys','Back to instant answers')}
+function send(q){q=q.trim();if(!q)return;add('me',RL.esc(q));
+ if(human){typing(()=>add('human',HUMAN_REPLIES[Math.min(hi++,HUMAN_REPLIES.length-1)](lastTopic),'Priya S. · Branch mentor'),1100);return}
+ typing(()=>answer(q));}
+$('form').onsubmit=e=>{e.preventDefault();send($('q').value);$('q').value=''};
+$('humanBtn').onclick=()=>human?goBot():goHuman();
+msgs.addEventListener('click',e=>{const b=e.target.closest('.chipbtn');if(!b)return;if(b.dataset.human)goHuman();else send(b.dataset.q)});
+$('chips').innerHTML=KB.slice(0,7).map(k=>'<button class="chipbtn" data-q="'+k.chip+'">'+k.chip+'</button>').join('');
+$('chips').onclick=e=>{const b=e.target.closest('.chipbtn');if(b)send(b.dataset.q)};
+$('topics').innerHTML=KB.map(k=>'<button class="topic" data-q="'+k.chip+'">'+k.title+' ›</button>').join('');
+$('topics').onclick=e=>{const b=e.target.closest('.topic');if(b)send(b.dataset.q)};
+add('bot','Namaste! 🙏 I\'m the ReadyLane mentor. Ask me which documents you need for a bank service, like opening an account, a KYC update, a large cash withdrawal, a DD or a loan.','ReadyLane Mentor');
+const pre=new URLSearchParams(location.search).get('q');if(pre)send(pre);
+</script>
+</body></html>

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Staff dashboard · ReadyLane</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2211%22 fill=%22%23FFD24D%22/%3E%3Cpath d=%22M12 21l6 6 11-13%22 fill=%22none%22 stroke=%22%235A124C%22 stroke-width=%224%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);margin:-26px 0 20px;position:relative;z-index:2}
+.bar label{font-size:.85rem;font-weight:600;display:flex;gap:6px;align-items:center}
+.bar select{font:inherit;padding:5px 8px;border-radius:8px;border:1px solid var(--line)}
+.bar .clock{margin-left:auto;font-weight:800;color:var(--plum)}
+.kpis5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+@media (max-width:900px){.kpis5{grid-template-columns:repeat(2,1fr)}}
+.kp{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.kp b{display:block;font-size:1.7rem;color:var(--plum);line-height:1.1}
+.kp span{font-size:.78rem;color:var(--muted)}
+.layout{display:grid;grid-template-columns:1.65fr 1fr;gap:20px;align-items:start;padding-bottom:60px}
+@media (max-width:1100px){.layout{grid-template-columns:1fr}}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin-bottom:20px}
+.panel h3{display:flex;align-items:center;gap:8px;font-size:1.02rem}
+.panel h3 .sub{margin-left:auto;font-size:.75rem;font-weight:600;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:.86rem}
+th{text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:8px 6px;border-bottom:1px solid var(--line)}
+td{padding:9px 6px;border-bottom:1px solid #F3ECF1;vertical-align:middle}
+tr.locked td{background:#FAF3FF}
+tr.mine td{background:#FFFBEA}
+.tbl-wrap{overflow-x:auto}
+.dots{display:flex;gap:4px}
+.dots i{width:12px;height:12px;border-radius:4px;background:#E7DDE4;display:inline-block}
+.dots i.pass{background:var(--ok)}.dots i.running{background:var(--info)}.dots i.fail{background:var(--bad)}
+.ovt{display:flex;align-items:center;gap:6px;font-weight:700;font-size:.8rem}
+.ovt .b{display:flex;gap:2px}.ovt .b i{width:10px;height:14px;border-radius:3px;background:#EADFE7}
+.ovt .b i.on{background:var(--warn)}.ovt.cap .b i.on{background:#7B2CBF}
+.ctr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media (max-width:600px){.ctr-grid{grid-template-columns:1fr}}
+.ctr{border:1.5px solid var(--line);border-radius:12px;padding:12px;cursor:pointer;transition:.15s;background:#fff;text-align:left;font:inherit}
+.ctr:hover,.ctr.sel{border-color:var(--plum)}
+.ctr .tk{font-size:1.5rem;font-weight:800;color:var(--plum)}
+.ctr .cash{font-size:.75rem;color:var(--muted);margin-top:6px}
+.appr{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;font-size:.86rem}
+.appr .row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.log{max-height:330px;overflow:auto;font-size:.8rem;display:grid;gap:4px}
+.log div{padding:5px 8px;border-radius:8px;background:#FBF7FA}
+.log .t{font-weight:700;color:var(--muted);margin-right:6px}
+.log .ok{background:var(--ok-bg)}.log .bad{background:var(--bad-bg)}.log .prio{background:#F3E4FF;font-weight:600}.log .call{background:#FFF5DB}.log .info{background:var(--info-bg)}
+.file{font-size:.86rem}
+.file .line{display:flex;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.file .line:last-child{border:0}
+.rule{background:#FAF3FF;border:1px solid #E3CCF5;border-radius:12px;padding:12px;font-size:.84rem}
+</style>
+</head><body>
+<header id="nav"></header>
+<div class="dark"><div class="container page-head" style="padding-bottom:50px">
+ <span class="eyebrow light">Staff / officer dashboard</span>
+ <h1 style="font-size:clamp(1.8rem,4vw,2.6rem)">Branch queue, readiness and the fairness cap</h1>
+ <p class="muted">A live simulation: ready customers are called ahead of customers still being checked, but every overtake is counted. At K overtakes a token is locked, the help desk clears its pending items and the next counter is reserved for it. 1 tick = 1 simulated minute.</p>
+</div></div>
+<div class="container">
+ <div class="bar">
+  <button class="btn btn-sm btn-plum" id="playBtn">⏸ Pause</button>
+  <button class="btn btn-sm btn-light" id="stepBtn">Step 1 min ›</button>
+  <label>Speed <select id="speed"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select></label>
+  <label>Fairness cap K <select id="kSel"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></label>
+  <label><input type="checkbox" id="autoOff" style="accent-color:var(--plum)"> Officer auto-approves</label>
+  <button class="btn btn-sm btn-light" id="resetBtn">↺ Restart simulation</button>
+  <span class="clock" id="clock"></span>
+ </div>
+ <div class="kpis5" id="kpis"></div>
+ <div class="layout">
+  <div>
+   <div class="panel"><h3>🗂 Live queue <span class="sub">sorted by arrival · overtake counter vs cap</span></h3><div class="tbl-wrap"><table><thead><tr><th>Token</th><th>Service</th><th>Arrived</th><th>Status</th><th>Checks</th><th>Overtaken</th><th>Est. call</th></tr></thead><tbody id="qBody"></tbody></table></div>
+    <p class="sim-note" style="margin-top:10px">Checks: <span class="dots"><i class="pass"></i></span> passed <span class="dots"><i class="running"></i></span> running <span class="dots"><i class="fail"></i></span> failed <span class="dots"><i></i></span> pending · Purple rows are locked at the cap · Yellow row is the token from the customer demo</p></div>
+   <div class="panel"><h3>🏦 Counters & cash drawers <span class="sub">click a counter to see its prepared file</span></h3><div class="ctr-grid" id="ctrs"></div><div id="file" style="margin-top:14px"></div></div>
+  </div>
+  <div>
+   <div class="panel"><h3>✍ Early officer approvals <span class="sub" id="apprSub"></span></h3><div id="appr"></div></div>
+   <div class="panel"><h3>⚖ Fair-Skip rule</h3><div class="rule" id="rule"></div></div>
+   <div class="panel"><h3>📜 Event log</h3><div class="log" id="log"></div></div>
+  </div>
+ </div>
+</div>
+<footer id="footer"></footer>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/engine.js"></script>
+<script>
+const $=id=>document.getElementById(id),esc=RL.esc,inr=RL.inr;
+let selCtr=1,lastQ='',lastA='',lastC='',lastL='';
+$('playBtn').onclick=()=>RL.setPaused(!RL.state.paused);
+$('stepBtn').onclick=()=>RL.step();
+$('speed').onchange=e=>RL.setSpeed(+e.target.value);
+$('kSel').onchange=e=>RL.setK(+e.target.value);
+$('autoOff').onchange=e=>RL.setAutoOfficer(e.target.checked);
+$('resetBtn').onclick=()=>RL.reset(+$('kSel').value);
+function set(id,html,key){if(window[key]===html)return;window[key]=html;$(id).innerHTML=html}
+function render(st){
+ $('playBtn').textContent=st.paused?'▶ Play':'⏸ Pause';$('stepBtn').disabled=!st.paused;$('stepBtn').title=st.paused?'':'Pause first to step';
+ $('speed').value=String(st.speed||1);$('kSel').value=String(st.K);$('autoOff').checked=!!st.autoOfficer;
+ $('clock').textContent='Sim time '+RL.simClock(st.now)+' · tick '+st.now;
+ const W=st.tokens.filter(t=>['checking','action','ready'].includes(t.state));
+ const served=st.tokens.filter(t=>t.state==='served');
+ const maxO=Math.max(0,...st.tokens.map(t=>t.overtakes));
+ set('kpis',[[W.length,'Waiting (checking / action / ready)'],[W.filter(t=>t.state==='ready').length,'Ready to call'],[W.filter(t=>t.state==='action').length,'Action needed'],
+  [st.tokens.filter(t=>t.locked&&t.state!=='served').length,'Locked at cap (priority)'],[maxO+' / '+st.K,'Highest overtake count vs cap']].map(([v,l])=>'<div class="kp"><b>'+v+'</b><span>'+l+'</span></div>').join(''),'_k');
+ const Q=st.tokens.filter(t=>t.state!=='served').sort((a,b)=>a.seq-b.seq);
+ set('qBody',Q.map(t=>{const e=RL.eta(t);
+   return '<tr class="'+(t.locked?'locked ':'')+(t.mine?'mine':'')+'"><td><b>'+t.id+'</b>'+(t.senior?' <span class="tag" title="Senior citizen / person with disability">Priority</span>':'')+(t.mine?' <span class="tag">you</span>':'')+'</td>'+
+   '<td>'+esc(RL.SERVICES[t.service].name)+(t.amount?'<br><span class="muted" style="font-size:.78rem">'+inr(t.amount)+'</span>':'')+'</td><td>'+RL.simClock(t.arrival)+'</td>'+
+   '<td><span class="chip '+(t.locked&&t.state!=='called'&&t.state!=='serving'?'priority':RL.STATUS_CLASS[t.state])+'">'+(t.locked&&['checking','action','ready'].includes(t.state)?'Locked · '+RL.STATUS_LABEL[t.state]:RL.STATUS_LABEL[t.state]+(t.counter?' · C'+t.counter:''))+'</span></td>'+
+   '<td><span class="dots" title="'+esc(t.checks.map(c=>c.label+': '+c.status).join('\n'))+'">'+t.checks.map(c=>'<i class="'+c.status+'"></i>').join('')+'</span></td>'+
+   '<td><span class="ovt'+(t.overtakes>=st.K?' cap':'')+'"><span class="b">'+Array.from({length:st.K},(_,i)=>'<i class="'+(i<t.overtakes?'on':'')+'"></i>').join('')+'</span>'+t.overtakes+'/'+st.K+'</span></td>'+
+   '<td>'+(e===0?'Now':e==null?'–':'~'+e+' min')+'</td></tr>'}).join('')||'<tr><td colspan="7" class="muted">No tokens</td></tr>','_q');
+ set('ctrs',st.counters.map(c=>{const t=c.busy&&st.tokens.find(x=>x.id===c.busy);
+   return '<button class="ctr'+(c.id===selCtr?' sel':'')+'" data-c="'+c.id+'"><div class="muted" style="font-size:.75rem;font-weight:700">COUNTER '+c.id+'</div><div class="tk">'+(t?t.id:c.reservedFor?'⏳ '+c.reservedFor:'Free')+'</div><div style="font-size:.8rem">'+(t?(t.state==='called'?(t.mine?'Called, grace <span class="grace-left" data-until="'+t.graceUntil+'">'+RL.graceLeft(t)+'</span> left':'Called, walking to counter'):'Serving · '+c.left+' min left'):c.reservedFor?'Reserved for capped token':'Waiting for a ready token')+'</div>'+
+   '<div class="cash">Drawer '+inr(c.cash)+' · earmarked '+inr(c.earmark)+'</div></button>'}).join(''),'_c');
+ document.querySelectorAll('.ctr').forEach(b=>b.onclick=()=>{selCtr=+b.dataset.c;window._c='';window._f='';render(RL.state)});
+ const c=st.counters.find(x=>x.id===selCtr),t=c&&c.busy&&st.tokens.find(x=>x.id===c.busy);
+ set('file',t?'<div class="file"><b>Prepared file for '+t.id+' at Counter '+c.id+'</b> <span class="muted">(teller sees this before the customer arrives)</span>'+t.checks.map(k=>'<div class="line"><span style="color:var(--ok);font-weight:800">✓</span><div><b>'+esc(k.label)+'</b><br><span class="muted">'+esc(k.detail)+'</span></div></div>').join('')+'</div>':'<p class="muted" style="margin:0">Counter '+selCtr+' has no customer right now.</p>','_f');
+ const A=st.tokens.filter(t=>t.checks.some(k=>k.officer&&k.status!=='pass')&&t.state!=='served');
+ $('apprSub').textContent=A.length+' open';
+ set('appr',A.length?A.map(t=>{const k=t.checks.find(k=>k.officer);const live=k.status==='running'&&k.awaiting;
+   return '<div class="appr"><div class="row"><b>'+t.id+' · '+esc(RL.SERVICES[t.service].name)+(t.amount?' '+inr(t.amount):'')+'</b>'+(t.locked?'<span class="chip priority">Cap priority</span>':'')+'</div><div class="muted" style="font-size:.8rem;margin:2px 0 6px">'+esc(k.label)+': '+(live?'awaiting your decision':k.status==='fail'?'customer asked to visit desk':'requested once earlier checks pass')+'</div>'+
+   (live?'<div class="row" style="justify-content:flex-start"><button class="btn btn-sm btn-ok" data-ap="'+t.id+'">Approve</button><button class="btn btn-sm btn-light" data-rj="'+t.id+'">Ask to visit desk</button></div>':'')+'</div>'}).join(''):'<p class="muted" style="margin:0">No pending approvals.</p>','_a');
+ document.querySelectorAll('[data-ap]').forEach(b=>b.onclick=()=>RL.approve(b.dataset.ap,true));
+ document.querySelectorAll('[data-rj]').forEach(b=>b.onclick=()=>RL.approve(b.dataset.rj,false));
+ const L=Q.find(t=>t.locked&&['checking','action','ready'].includes(t.state));
+ set('rule','<b>K = '+st.K+'.</b> Each time a later token is called first, every earlier waiting token gets +1 overtake. A token at '+st.K+'/'+st.K+' is locked: no later token may be called before it.<div class="divider" style="margin:10px 0"></div>'+
+  (L?'<b>Now:</b> '+L.id+' is locked ('+L.overtakes+'/'+st.K+'). '+(L.state==='ready'?'It is ready and gets the next free counter.':'The help desk is clearing its pending items. Only tokens that arrived before it can be called meanwhile.'):'<b>Now:</b> no token is at the cap.'),'_r');
+ set('log',st.log.slice(0,60).map(l=>'<div class="'+(l.cls||'')+'"><span class="t">'+RL.simClock(l.t)+'</span>'+esc(l.m)+'</div>').join(''),'_l');
+}
+RL.onChange(render);RL.start();
+</script>
+</body></html>
