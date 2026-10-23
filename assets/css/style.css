@@ -6,7 +6,7 @@
   --ok:#14A06F; --ok-bg:#E5F7EF; --warn:#E8A317; --warn-bg:#FFF5DB; --bad:#D9414E; --bad-bg:#FDE8EA;
   --info:#3B6FE0; --info-bg:#E8EFFD;
   --r:16px; --r-sm:10px; --shadow:0 10px 30px rgba(42,8,36,.08); --shadow-lg:0 24px 60px rgba(42,8,36,.18);
-  --font: "Inter","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font: "Inter","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,"Noto Sans Devanagari","Nirmala UI","Mangal",sans-serif;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -36,8 +36,9 @@ p{margin:0 0 1em}
 .nav-links a:hover{color:#fff;background:rgba(255,255,255,.08)}
 .nav-links a.active{color:var(--plum-deep);background:var(--gold)}
 .nav-toggle{display:none;margin-left:auto;background:none;border:0;color:#fff;font-size:1.6rem;cursor:pointer}
-@media (max-width:920px){
-  .nav-toggle{display:block}
+@media (max-width:1240px){
+  .nav-toggle{display:block;margin-left:8px}
+  .nav-tools{margin-left:auto}
   .nav-links{display:none;position:absolute;top:64px;left:0;right:0;flex-direction:column;background:var(--plum-deep);padding:12px 4vw 18px;border-bottom:1px solid rgba(255,255,255,.1)}
   .nav-links.open{display:flex}
 }
@@ -182,3 +183,91 @@ footer a{color:rgba(255,255,255,.85);text-decoration:none;margin-right:14px}
 .phone .paper .meta{grid-template-columns:1fr;gap:0}
 .phone .paper .meta span{font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
 .toasts{left:18px;right:auto}
+
+/* =================================================================
+   v3: language toggle, easy mode, listen buttons, picture steps,
+   documents, checklist status column
+   ================================================================= */
+.ni{margin-right:5px}
+.nav-links{margin-left:auto}
+.nav-tools{display:flex;align-items:center;gap:8px;flex:none}
+.lang-toggle{display:inline-flex;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:3px}
+.lang-toggle button{font:inherit;font-weight:800;font-size:.88rem;color:#fff;background:none;border:0;border-radius:999px;padding:6px 12px;min-height:40px;min-width:48px;cursor:pointer}
+.lang-toggle button.on,.lang-toggle button[aria-pressed="true"]{background:var(--gold);color:var(--plum-deep)}
+.easy-btn{font:inherit;font-weight:800;font-size:.86rem;color:#fff;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:6px 12px;min-height:46px;cursor:pointer;white-space:nowrap}
+.easy-btn[aria-pressed="true"]{background:var(--gold);color:var(--plum-deep);border-color:var(--gold)}
+@media (max-width:480px){.easy-btn span:last-child{display:none}.nav .container{gap:8px}.brand small{display:none}}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.btn:focus-visible,.svc:focus-visible,.fchip:focus-visible{outline:3px solid var(--plum-2)}
+
+/* listen (text-to-speech) */
+.listen{font:inherit;font-weight:700;font-size:.85rem;display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line);background:#fff;color:var(--plum);border-radius:999px;padding:6px 12px;min-height:40px;cursor:pointer;flex:none}
+.listen:hover{border-color:var(--plum-2)}
+.listen.speaking{background:var(--gold);border-color:var(--gold);animation:pulse 1.2s ease-in-out infinite}
+.dark .listen{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.3)}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(255,210,77,.35)}}
+.btn-big{font-size:1.15rem;padding:1em 1.8em;min-height:58px}
+
+/* numbered picture steps */
+.pic-steps{background:#FBF1F8;border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;margin-bottom:6px}
+.ps-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.ps-list{list-style:none;margin:0;padding:0;display:flex;align-items:stretch;gap:6px;flex-wrap:wrap}
+.ps-list li:not(.ps-arrow){flex:1 1 120px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;background:#fff;border-radius:12px;padding:10px 8px;position:relative;min-height:96px}
+.ps-n{position:absolute;top:6px;left:8px;width:24px;height:24px;border-radius:50%;background:var(--plum);color:#fff;font-weight:800;font-size:.8rem;display:grid;place-items:center}
+.ps-ic{font-size:2rem;line-height:1.2}
+.ps-t{font-weight:700;font-size:.86rem;line-height:1.25}
+.ps-arrow{align-self:center;color:var(--plum-2);font-weight:800}
+@media (max-width:640px){.ps-arrow{display:none}.ps-list li:not(.ps-arrow){flex-basis:40%}}
+
+/* checklist status word + status card */
+.check .ic{font-size:1.05rem}
+.check .ck-st{font-size:.78rem;font-weight:800;padding:3px 9px;border-radius:999px;background:#F1EAF0;color:var(--muted);white-space:nowrap}
+.check.running .ck-st{background:var(--warn-bg);color:#7A5200}
+.check.pass .ck-st{background:var(--ok-bg);color:#0B6B49}
+.check.fail .ck-st{background:var(--bad-bg);color:#A3202C}
+.check.running .ic{font-size:0}
+.mini-dl{display:inline-block;margin-left:6px;font-weight:800;color:var(--plum);text-decoration:underline;padding:4px 2px}
+.bs-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.bs-top>span{font-size:2rem;line-height:1}
+.bs-sub{font-size:.92rem;opacity:.9}
+a.dl{white-space:nowrap}
+
+/* index: customer quick start */
+.cust-start{padding:56px 0;background:#fff;border-bottom:1px solid var(--line)}
+.big-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:760px){.big-tiles{grid-template-columns:repeat(2,1fr)}}
+.big-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:130px;padding:16px;border:2px solid var(--line);border-radius:18px;background:var(--bg);text-decoration:none;text-align:center;transition:.15s}
+.big-tile:hover{border-color:var(--plum);transform:translateY(-2px)}
+.big-tile .bt-ic{font-size:2.8rem;line-height:1}
+.big-tile b{font-size:1.1rem}
+
+/* ---------- Easy mode: bigger everything, less text ---------- */
+.easy-only{display:none}
+body.easy .easy-only{display:revert}
+body.easy .easy-hide{display:none!important}
+body.easy{font-size:1.14rem}
+body.easy .btn,body.easy .listen,body.easy .fchip,body.easy .svc,body.easy .big-tile,body.easy .form-row .btn{min-height:56px}
+@media (max-width:1240px){body.easy .nav-links a{min-height:52px;display:flex;align-items:center}}
+body.easy .btn-sm{font-size:1rem;padding:.7em 1.1em}
+body.easy .listen{font-size:1rem;padding:8px 16px}
+body.easy .check{padding:16px}
+body.easy .check .t{font-size:1.1rem}
+body.easy .check .ic{width:44px;height:44px;font-size:1.4rem}
+body.easy .check{grid-template-columns:48px 1fr auto}
+body.easy .check .ck-st{font-size:.95rem;padding:5px 12px}
+body.easy .paper .num,body.easy .phone .paper .num{font-size:3.4rem}
+body.easy .svc .e{font-size:2.8rem}
+body.easy .svc b{font-size:1.05rem}
+body.easy .ps-ic{font-size:2.6rem}
+body.easy .ps-t{font-size:1rem}
+body.easy .muted{color:#4E3D4A}
+body.easy .big-tile .bt-ic{font-size:3.4rem}
+.lang-toggle button{min-height:48px}
+.nav-toggle{min-width:48px;min-height:48px}
+body.easy .lang-toggle button{min-height:48px}
+/* easy mode inside the narrow phone mock: stack the status word under the text */
+body.easy .phone .check{grid-template-columns:40px 1fr;padding:12px}
+body.easy .phone .check .ck-st{grid-column:2;justify-self:start}
+body.easy .phone .check .ic{width:36px;height:36px;font-size:1.15rem}
+body.easy .phone .check .t{font-size:1rem}
+body.easy .dark .muted,body.easy .page-head .muted{color:rgba(255,255,255,.88)}
