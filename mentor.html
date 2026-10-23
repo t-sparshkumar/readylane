@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head>
+<html lang="en" data-title="mt.title"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bank mentor · ReadyLane</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2211%22 fill=%22%23FFD24D%22/%3E%3Cpath d=%22M12 21l6 6 11-13%22 fill=%22none%22 stroke=%22%235A124C%22 stroke-width=%224%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
@@ -31,13 +31,17 @@
 .side .card{margin-bottom:16px}
 .topic{display:block;width:100%;text-align:left;border:0;background:none;font:inherit;padding:7px 0;border-bottom:1px dashed var(--line);cursor:pointer;color:var(--ink);font-size:.9rem}
 .topic:hover{color:var(--plum)}
+.msg .listen{margin-top:8px}
+.msg .dls{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.compose .mic{flex:none}
+.mic.on{background:var(--bad);color:#fff;border-color:var(--bad)}
 </style>
 </head><body>
 <header id="nav"></header>
 <div class="dark"><div class="container page-head">
- <span class="eyebrow light">Mentor / guide</span>
- <h1 style="font-size:clamp(1.8rem,4vw,2.6rem)">Ask before you go: "What do I need to bring?"</h1>
- <p class="muted">An in-browser assistant with a local knowledge base of common Indian bank services. It understands simple English and Hinglish, e.g. <i>"account kholna hai"</i> or <i>"75000 jama karna hai"</i>. Need a person? Hand over to a human branch mentor (simulated).</p>
+ <span class="eyebrow light" data-i18n="mt.eb">Mentor / guide</span>
+ <h1 style="font-size:clamp(1.8rem,4vw,2.6rem)" data-i18n="mt.h1">Ask before you go: "What do I need to bring?"</h1>
+ <p class="muted easy-hide" data-i18n-html="mt.p">An in-browser assistant with a local knowledge base of common Indian bank services. It understands simple English and Hinglish, e.g. <i>"account kholna hai"</i> or <i>"75000 jama karna hai"</i>. Need a person? Hand over to a human branch mentor (simulated).</p>
 </div></div>
 <div class="container m-grid">
  <div class="chat">
@@ -45,72 +49,100 @@
    <button class="btn btn-sm btn-light" id="humanBtn" style="margin-left:auto">🙋 Talk to a human mentor</button></div>
   <div class="msgs" id="msgs" aria-live="polite"></div>
   <div class="chips" id="chips"></div>
-  <form class="compose" id="form"><input id="q" autocomplete="off" placeholder="Type your question… e.g. documents for home loan"><button class="btn btn-plum">Send</button></form>
+  <form class="compose" id="form"><button type="button" class="btn btn-light mic" id="micBtn" hidden aria-label="Speak your question">🎤</button><input id="q" autocomplete="off" placeholder="Type your question… e.g. documents for home loan" data-i18n-ph="mt.ph" aria-label="Type your question… e.g. documents for home loan" data-i18n-aria="mt.ph"><button class="btn btn-plum" data-i18n="mt.send">Send</button></form>
  </div>
  <div class="side">
-  <div class="card"><h3>Popular topics</h3><div id="topics"></div></div>
-  <div class="card"><h3>Good to know</h3><p class="muted" style="font-size:.88rem;margin:0">Answers are general guidance. Limits and forms vary by bank, so confirm at your branch. The mentor never asks for your PIN, OTP or password.</p></div>
+  <div class="card"><h3 data-i18n="mt.topics">Popular topics</h3><div id="topics"></div></div>
+  <div class="card"><h3 data-i18n="mt.good">Good to know</h3><p class="muted" style="font-size:.88rem;margin:0" data-i18n="mt.goodP">Answers are general guidance. Limits and forms vary by bank, so confirm at your branch. The mentor never asks for your PIN, OTP or password.</p></div>
  </div>
 </div>
 <footer id="footer"></footer>
+<script src="assets/js/i18n.js"></script>
 <script src="assets/js/common.js"></script>
+<script src="assets/js/docs.js"></script>
 <script src="assets/js/mentor-kb.js"></script>
 <script>
-const KB=window.MENTOR_KB,$=id=>document.getElementById(id),msgs=$('msgs');
-let human=false,lastTopic=null;
-function add(cls,html,who){const d=document.createElement('div');d.className='msg '+cls;d.innerHTML=(who?'<div class="who">'+who+'</div>':'')+html;msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;return d}
-function typing(cb,ms){const d=add(human?'human':'bot','<span class="typing"><i></i><i></i><i></i></span>');setTimeout(()=>{d.remove();cb()},ms||650)}
+const KB=window.MENTOR_KB,$=id=>document.getElementById(id),msgs=$('msgs'),T=(k,p)=>RL.t(k,p);
+const HI=()=>RL.lang==='hi';
+const title=e=>HI()&&e.title_hi?e.title_hi:e.title, chip=e=>HI()&&e.chip_hi?e.chip_hi:e.chip, ans=e=>HI()&&e.a_hi?e.a_hi:e.a;
+let human=false,lastTopic=null,userSpoke=false;
+function add(cls,html,who,opt){const d=document.createElement('div');d.className='msg '+cls;
+ d.innerHTML=(who?'<div class="who">'+who+'</div>':'')+'<div class="body">'+html+'</div>'+
+  ((cls==='bot'||cls==='human')&&!(opt&&opt.noListen)?'<button type="button" class="listen" data-speak="" aria-label="'+T('listen.aria')+'">🔊 <span>'+T('listen')+'</span></button>':'');
+ const b=d.querySelector('.listen');
+ if(b){const c=d.querySelector('.body').cloneNode(true);c.querySelectorAll('.dls,.chipbtn').forEach(x=>x.remove());c.querySelectorAll('li,b,.note').forEach(x=>x.append('. '));b.dataset.speakText=c.textContent.replace(/(\.\s*){2,}/g,'. ')}
+ msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
+ return d}
+function typing(cb,ms){const d=add(human?'human':'bot','<span class="typing"><i></i><i></i><i></i></span>',null,{noListen:true});setTimeout(()=>{d.remove();cb()},ms||650)}
 function norm(s){return ' '+s.toLowerCase().replace(/[₹,]/g,m=>m===','?'':' ').replace(/[^a-z0-9\u0900-\u097f\- ]/g,' ').replace(/\s+/g,' ')+' '}
 function match(q){
  const n=norm(q);let best=null,score=0;
- KB.forEach(e=>{let s=0;e.kw.forEach(k=>{const kk=norm(k).trim();if(!kk)return;
+ KB.forEach(e=>{let s=0;e.kw.concat([e.chip,e.chip_hi||'']).forEach(k=>{const kk=norm(k).trim();if(!kk)return;
    if(n.includes(' '+kk+' '))s+=kk.includes(' ')?3:2; else if(kk.length>4&&n.includes(kk))s+=1;});
   if(s>score){score=s;best=e}});
- // amount hints: "75000 jama" / "3 lakh nikalna"
  return score>=2?best:null;
 }
 function amountNote(q,e){
- const m=q.replace(/,/g,'').match(/(\d+(?:\.\d+)?)\s*(lakh|lac|l\b|k\b)?/i);if(!m)return '';
- let v=parseFloat(m[1]);const u=(m[2]||'').toLowerCase();if(u.startsWith('la')||u==='l')v*=100000;else if(u==='k')v*=1000;
+ const m=q.replace(/,/g,'').match(/(\d+(?:\.\d+)?)\s*(lakh|lac|लाख|l\b|k\b)?/i);if(!m)return '';
+ let v=parseFloat(m[1]);const u=(m[2]||'').toLowerCase();if(u.startsWith('la')||u==='l'||u==='लाख')v*=100000;else if(u==='k')v*=1000;
  if(v<100)return '';
- const amt='₹'+Math.round(v).toLocaleString('en-IN');
- if(e.id==='deposit')return '<div class="note">For your amount ('+amt+'): '+(v>50000?'<b>PAN or Form 60 is required.</b>':'no PAN needed for a single-day cash deposit up to ₹50,000.')+'</div>';
- if(e.id==='withdraw')return '<div class="note">For your amount ('+amt+'): '+(v>200000?'above the demo teller limit of ₹2,00,000, so <b>officer approval</b> is needed. ReadyLane requests it in advance.':'within the demo teller limit, so no officer approval is needed.')+'</div>';
- if(e.id==='dd')return '<div class="note">For your amount ('+amt+'): '+(v>=50000?'<b>must be paid from your account or by cheque</b>, not cash.':'can be paid by account debit or cash.')+'</div>';
+ const amt='₹'+Math.round(v).toLocaleString('en-IN'),pre=T('mt.amt',{amt});
+ if(e.id==='deposit')return '<div class="note">'+pre+T(v>50000?'mt.dep.over':'mt.dep.under')+'</div>';
+ if(e.id==='withdraw')return '<div class="note">'+pre+T(v>200000?'mt.wd.over':'mt.wd.under')+'</div>';
+ if(e.id==='dd')return '<div class="note">'+pre+T(v>=50000?'mt.dd.over':'mt.dd.under')+'</div>';
  return '';
 }
-const GREET=/^(hi|hello|hey|namaste|namaskar|hii+|good (morning|afternoon|evening))\b/i;
+// download links for the sample forms related to a topic
+function formLinks(e){const F=(e.forms||[]);if(!F.length||!RL.formLink)return '';
+ return '<div class="dls">'+F.map(id=>RL.formLink(id,'btn btn-sm btn-gold')).join('')+'<a class="btn btn-sm btn-light" href="documents.html">'+T('mt.dlAll')+'</a></div>'}
+const GREET=/^(hi|hello|hey|namaste|namaskar|hii+|good (morning|afternoon|evening)|नमस्ते|नमस्कार|प्रणाम)(\s|$|!)/i;
 function answer(q){
- if(GREET.test(q.trim())){add('bot','Namaste! 🙏 Ask me which documents you need for any bank service, or tap a topic below.','ReadyLane Mentor');return}
- if(/\b(otp|pin|password|cvv)\b/i.test(q)&&/\b(share|send|give|tell|batao|bhejo)\b/i.test(q)){add('bot','<b>Never share your OTP, PIN, CVV or password</b> with anyone, including bank staff or this mentor. The bank will never ask for them.','ReadyLane Mentor');return}
+ if(GREET.test(q.trim())){add('bot',T('mt.hi'),T('mt.bot'));return}
+ if((/\b(otp|pin|password|cvv)\b/i.test(q)||/ओटीपी|पिन|पासवर्ड/.test(q))&&(/\b(share|send|give|tell|batao|bhejo)\b/i.test(q)||/बताओ|बताएँ|भेजो|भेजें|दे दो|शेयर/.test(q))){add('bot',T('mt.otp'),T('mt.bot'));return}
  const e=match(q);
- if(e){lastTopic=e;add('bot',e.a+amountNote(q,e)+'<div class="note">General guidance. Please confirm bank-specific limits at your branch.</div>','ReadyLane Mentor · '+e.title);return}
- add('bot','I\'m not sure about that one yet. Try one of these topics, or <b>talk to a human mentor</b>:<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">'+KB.slice(0,6).map(k=>'<button class="chipbtn" data-q="'+k.chip+'">'+k.chip+'</button>').join('')+'<button class="chipbtn" data-human="1">🙋 Human mentor</button></div>','ReadyLane Mentor');
+ if(e){lastTopic=e;add('bot',ans(e)+amountNote(q,e)+formLinks(e)+'<div class="note">'+T('mt.confirm')+'</div>',T('mt.bot')+' · '+title(e));return}
+ add('bot',T('mt.unknown')+'<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">'+KB.slice(0,6).map(k=>'<button class="chipbtn" data-q="'+RL.esc(chip(k))+'">'+chip(k)+'</button>').join('')+'<button class="chipbtn" data-human="1">'+T('mt.humanChip')+'</button></div>',T('mt.bot'));
 }
-const HUMAN_REPLIES=[
- t=>'Thanks for waiting! I\'m Priya, a branch mentor at SmartQ Bank. '+(t?'I see you were asking about <b>'+t.title.toLowerCase()+'</b>. ':'')+'How can I help?',
- ()=>'Understood. If you already have a token, I can add a note to it so the counter staff are prepared. You can also come to <b>Help Desk 1</b> near the entrance.',
- ()=>'Sure. Bring the original documents along with one self-attested photocopy each. If anything is missing, ReadyLane will tell you before you reach the counter.',
- ()=>'Happy to help! Anything else? You can switch back to instant answers at any time.'];
+const HUMAN_REPLIES=[t=>T('mt.hr0',{topic:t?T('mt.hr0t',{t:title(t).toLowerCase()}):''}),()=>T('mt.hr1'),()=>T('mt.hr2'),()=>T('mt.hr3')];
 let hi=0;
-function goHuman(){
- if(human)return;human=true;$('humanBtn').textContent='↩ Back to instant answers';
- add('sys','Connecting you to a branch mentor… (simulated, no real person or data is involved)');
- setTimeout(()=>{$('av').textContent='PS';$('av').classList.add('h');$('who').textContent='Priya S. · Branch mentor';$('whoSub').textContent='SmartQ Bank · typically replies in 1–2 min (simulated)';
-  add('sys','Priya S. joined the chat');typing(()=>add('human',HUMAN_REPLIES[0](lastTopic),'Priya S. · Branch mentor'),900);hi=1},1200);
+function head(){
+ $('humanBtn').textContent=human?T('mt.toBot'):T('mt.toHuman');
+ if(human&&hi){$('who').textContent=T('mt.priya');$('whoSub').textContent=T('mt.priyaSub')}
+ else if(!human){$('who').textContent=T('mt.bot');$('whoSub').textContent=T('mt.botSub')}
 }
-function goBot(){human=false;$('humanBtn').textContent='🙋 Talk to a human mentor';$('av').textContent='RL';$('av').classList.remove('h');$('who').textContent='ReadyLane Mentor';$('whoSub').textContent='Instant answers · general guidance';add('sys','Back to instant answers')}
-function send(q){q=q.trim();if(!q)return;add('me',RL.esc(q));
- if(human){typing(()=>add('human',HUMAN_REPLIES[Math.min(hi++,HUMAN_REPLIES.length-1)](lastTopic),'Priya S. · Branch mentor'),1100);return}
+function goHuman(){
+ if(human)return;human=true;head();
+ add('sys',T('mt.connecting'));
+ setTimeout(()=>{$('av').textContent='PS';$('av').classList.add('h');hi=1;head();
+  add('sys',T('mt.joined'));typing(()=>add('human',HUMAN_REPLIES[0](lastTopic),T('mt.priya')),900)},1200);
+}
+function goBot(){human=false;hi=0;$('av').textContent='RL';$('av').classList.remove('h');head();add('sys',T('mt.backBot'))}
+function send(q){q=q.trim();if(!q)return;userSpoke=true;add('me',RL.esc(q));
+ if(human){typing(()=>add('human',HUMAN_REPLIES[Math.min(hi++,HUMAN_REPLIES.length-1)](lastTopic),T('mt.priya')),1100);return}
  typing(()=>answer(q));}
 $('form').onsubmit=e=>{e.preventDefault();send($('q').value);$('q').value=''};
 $('humanBtn').onclick=()=>human?goBot():goHuman();
 msgs.addEventListener('click',e=>{const b=e.target.closest('.chipbtn');if(!b)return;if(b.dataset.human)goHuman();else send(b.dataset.q)});
-$('chips').innerHTML=KB.slice(0,7).map(k=>'<button class="chipbtn" data-q="'+k.chip+'">'+k.chip+'</button>').join('');
+function side(){
+ $('chips').innerHTML=KB.slice(0,7).map(k=>'<button class="chipbtn" data-q="'+RL.esc(chip(k))+'">'+chip(k)+'</button>').join('');
+ $('topics').innerHTML=KB.map(k=>'<button class="topic" data-q="'+RL.esc(chip(k))+'">'+title(k)+' ›</button>').join('');
+ $('micBtn').title=T('mt.mic');$('micBtn').setAttribute('aria-label',T('mt.mic'));
+}
 $('chips').onclick=e=>{const b=e.target.closest('.chipbtn');if(b)send(b.dataset.q)};
-$('topics').innerHTML=KB.map(k=>'<button class="topic" data-q="'+k.chip+'">'+k.title+' ›</button>').join('');
 $('topics').onclick=e=>{const b=e.target.closest('.topic');if(b)send(b.dataset.q)};
-add('bot','Namaste! 🙏 I\'m the ReadyLane mentor. Ask me which documents you need for a bank service, like opening an account, a KYC update, a large cash withdrawal, a DD or a loan.','ReadyLane Mentor');
+function greet(){msgs.innerHTML='';add('bot',T('mt.greet'),T('mt.bot'))}
+side();head();greet();
+// switching language before asking anything: greet again in the new language. Later messages stay as they were.
+RL.onLang(()=>{side();head();if(!userSpoke&&!human)greet()});
+// optional voice input (only where the browser supports speech recognition)
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(SR){const mb=$('micBtn');mb.hidden=false;let rec=null;
+ mb.onclick=()=>{if(rec){rec.stop();return}
+  rec=new SR();rec.lang=HI()?'hi-IN':'en-IN';rec.interimResults=false;
+  mb.classList.add('on');$('q').placeholder=T('mt.micOn');
+  rec.onresult=ev=>{const txt=ev.results[0][0].transcript;send(txt)};
+  rec.onend=rec.onerror=()=>{mb.classList.remove('on');$('q').placeholder=T('mt.ph');rec=null};
+  try{rec.start()}catch(e){rec=null;mb.classList.remove('on')}}}
 const pre=new URLSearchParams(location.search).get('q');if(pre)send(pre);
 </script>
 </body></html>

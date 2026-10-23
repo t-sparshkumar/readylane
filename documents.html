@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en" data-title="doc.title"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Documents &amp; forms · ReadyLane</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2211%22 fill=%22%23FFD24D%22/%3E%3Cpath d=%22M12 21l6 6 11-13%22 fill=%22none%22 stroke=%22%235A124C%22 stroke-width=%224%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+.doc-tools{display:grid;gap:12px;margin:22px 0 8px}
+.doc-search{position:relative}
+.doc-search .input{font:inherit;font-size:1.05rem;padding:14px 16px 14px 48px;border:2px solid var(--line);border-radius:14px;width:100%;min-height:54px;background:#fff}
+.doc-search .input:focus{outline:none;border-color:var(--plum)}
+.doc-search .si{position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:1.3rem}
+.chips-row{display:flex;flex-wrap:wrap;gap:8px}
+.fchip{font:inherit;font-weight:700;border:2px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;min-height:48px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.fchip .e{font-size:1.25rem}
+.fchip.on{background:var(--plum);border-color:var(--plum);color:#fff}
+.doc-disc{background:#FFF7DB;border:2px solid var(--gold);border-radius:14px;padding:12px 16px;margin-top:18px}
+.doc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:14px}
+@media (max-width:860px){.doc-grid{grid-template-columns:1fr}}
+.doc-card{background:#fff;border:1.5px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:90px}
+.doc-card.hl{box-shadow:0 0 0 4px rgba(255,210,77,.8)}
+.dc-top{display:flex;align-items:center;gap:12px}
+.dc-ic{flex:none;width:58px;height:58px;border-radius:16px;background:#FBF1F8;display:grid;place-items:center;font-size:2rem}
+.dc-top h3{margin:0;flex:1;font-size:1.2rem}
+.dc-sub{font-weight:800;font-size:.85rem;text-transform:uppercase;letter-spacing:.04em;color:var(--plum)}
+.bring{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.bring li{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;background:#FBF7FA;border-radius:10px}
+.bring .bi{flex:none;font-size:1.3rem;width:1.6em;text-align:center}
+.bring .cond{display:inline-block;margin-left:6px;font-size:.74rem;font-weight:700;background:#FFF1C2;color:#5A3D00;border-radius:6px;padding:1px 7px}
+.forms{display:grid;gap:8px}
+.form-row{display:flex;align-items:center;gap:10px;border:1.5px dashed var(--line);border-radius:12px;padding:8px 10px}
+.form-row .fi{font-size:1.5rem;flex:none}
+.form-row .fn{flex:1;min-width:0}.form-row .fn b{display:block}.form-row .fn small{color:var(--muted)}
+.form-row .btn{min-height:48px;flex:none}
+.dc-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+.dc-acts .btn{min-height:48px}
+.common-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:14px}
+.common-grid .form-row{background:#fff;border-style:solid;flex-wrap:wrap}
+.doc-help{display:flex;gap:12px;align-items:center;background:#EEF8F0;border:2px solid #9ED3AA;border-radius:14px;padding:14px 16px;margin:26px 0 10px;font-weight:600}
+.doc-help .e{font-size:2rem}
+.doc-count{color:var(--muted);font-size:.9rem}
+</style>
+</head><body>
+<header id="nav"></header>
+<div class="dark"><div class="container page-head">
+ <span class="eyebrow light" data-i18n="doc.eb">Documents &amp; forms</span>
+ <h1 style="font-size:clamp(1.8rem,4vw,2.8rem)" data-i18n="doc.h1">Download the form. Fill it at home. Come with everything.</h1>
+ <p class="muted" data-i18n="doc.p">Choose your work and see what to bring. Download a sample form, print it and fill it by hand. Every form is in English and Hindi.</p>
+</div></div>
+
+<main class="container" style="padding-bottom:60px">
+ <div class="doc-disc" role="note" data-i18n-html="doc.disc"><b>⚠ ReadyLane sample forms for the demo.</b> Your bank's official form may differ. These are not any real bank's forms.</div>
+ <div class="pic-steps" style="margin-top:18px"></div>
+ <div class="doc-tools">
+  <label class="doc-search"><span class="si" aria-hidden="true">🔍</span>
+   <input class="input" id="q" type="search" autocomplete="off" placeholder="Search: e.g. PAN, deposit, address, loan" data-i18n-ph="doc.searchPh" data-i18n-aria="doc.searchAria" aria-label="Search documents"></label>
+  <div class="chips-row" id="chips" role="group" aria-label="Filter by service" data-i18n-aria="doc.byService"></div>
+  <div class="doc-count" id="count" aria-live="polite"></div>
+ </div>
+ <div class="doc-grid" id="cards"></div>
+ <div id="none" class="empty" style="display:none" data-i18n="doc.none">Nothing found. Try another word, or ask the mentor.</div>
+ <section id="common" style="margin-top:34px;scroll-margin-top:90px">
+  <h2 style="display:flex;gap:10px;align-items:center"><span aria-hidden="true">🗂</span><span data-i18n="doc.commonH">Common forms (useful for everyone)</span></h2>
+  <div class="common-grid" id="commonGrid"></div>
+ </section>
+ <div class="doc-help"><span class="e" aria-hidden="true">🙋</span><span data-i18n="doc.help">Can't read or write? Bring the form to the kiosk and a staff helper will fill it in. You can give a thumb impression instead of a signature.</span></div>
+</main>
+<footer id="footer"></footer>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/common.js"></script>
+<script src="assets/js/engine.js"></script>
+<script src="assets/js/docs.js"></script>
+<script>
+(function(){
+const $=id=>document.getElementById(id),t=(k,p)=>RL.t(k,p),esc=RL.esc;
+const SV=RL.SERVICES,keys=Object.keys(SV),F=RL.DOCS.FORMS;
+let filter='all';
+const h=(location.hash||'').slice(1);if(h==='common'||SV[h])filter=h;
+// search text covers both languages so a Hindi word works while in English mode and vice versa
+function hay(svc){
+ const parts=[];['en','hi'].forEach(l=>{parts.push(RL.t('svc.'+svc,null,l));
+  (RL.DOCS.BRING[svc]||[]).forEach(b=>parts.push(RL.t(b[0],{lim:''},l)));
+  (RL.DOCS.SVC_FORMS[svc]||[]).forEach(id=>parts.push(RL.t('form.'+id,null,l),RL.t('formd.'+id,null,l)))});
+ return parts.join(' ').toLowerCase();
+}
+function formHay(id){return ['en','hi'].map(l=>RL.t('form.'+id,null,l)+' '+RL.t('formd.'+id,null,l)).join(' ').toLowerCase()}
+function formRow(id){const f=RL.docForm(id);
+ return '<div class="form-row"><span class="fi" aria-hidden="true">'+f.ic+'</span><div class="fn"><b>'+esc(f.name)+'</b><small>'+esc(t('doc.pdf',{kb:f.kb}))+'</small></div>'+
+  RL.formLink(id,'btn btn-gold',t('doc.download'))+'</div>'}
+function chips(){
+ const all=[['all','📚',t('doc.all')]].concat(keys.map(k=>[k,SV[k].icon,RL.svcName(k)]),[['common','🗂',t('doc.common')]]);
+ $('chips').innerHTML=all.map(([k,ic,n])=>'<button type="button" class="fchip'+(filter===k?' on':'')+'" data-f="'+k+'" aria-pressed="'+(filter===k)+'"><span class="e" aria-hidden="true">'+ic+'</span>'+esc(n)+'</button>').join('');
+}
+function card(svc){
+ const b=RL.bringList(svc),fs=RL.formsFor(svc),name=RL.svcName(svc);
+ const say=t('doc.say',{name,list:b.map(x=>x.text+(x.tag?' ('+x.tag+')':'')).join('; ')});
+ const chip=encodeURIComponent(name);
+ return '<article class="doc-card" id="'+svc+'" data-svc="'+svc+'"><div class="dc-top"><span class="dc-ic" aria-hidden="true">'+SV[svc].icon+'</span><h3>'+esc(name)+'</h3>'+
+  '<button type="button" class="btn btn-sm btn-light listen" data-speak="" data-speak-text="'+esc(say)+'" aria-label="'+esc(t('listen.aria'))+'">🔊 '+esc(t('listen'))+'</button></div>'+
+  '<div class="dc-sub">✅ '+esc(t('doc.bring'))+'</div><ul class="bring">'+b.map(x=>'<li><span class="bi" aria-hidden="true">'+x.ic+'</span><span>'+esc(x.text)+(x.tag?'<span class="cond">'+esc(x.tag)+'</span>':'')+'</span></li>').join('')+'</ul>'+
+  (fs.length?'<div class="dc-sub">📥 '+esc(t('doc.forms'))+'</div><div class="forms">'+fs.map(f=>formRow(f.id)).join('')+'</div>':'')+
+  '<div class="dc-acts"><a class="btn btn-plum" href="demo.html?s='+svc+'">'+esc(t('doc.take'))+'</a><a class="btn btn-light" href="mentor.html?q='+chip+'">'+esc(t('doc.ask'))+'</a></div></article>';
+}
+function render(){
+ chips();
+ const q=$('q').value.trim().toLowerCase();
+ let shown=0;
+ const vis=keys.filter(k=>(filter==='all'||filter===k)&&(!q||hay(k).includes(q)));
+ $('cards').innerHTML=vis.map(card).join('');shown+=vis.length;
+ const cf=RL.DOCS.COMMON.filter(id=>(filter==='all'||filter==='common')&&(!q||formHay(id).includes(q)));
+ $('commonGrid').innerHTML=cf.map(formRow).join('');$('common').style.display=cf.length?'':'none';shown+=cf.length;
+ $('none').style.display=shown?'none':'';
+ $('count').textContent=t('doc.count',{n:shown});
+}
+$('chips').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b)return;filter=b.dataset.f;history.replaceState(null,'',filter==='all'?location.pathname:'#'+filter);render();
+ const tgt=filter==='common'?$('common'):null;if(tgt)tgt.scrollIntoView({behavior:'smooth',block:'start'})});
+$('q').addEventListener('input',render);
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(h==='common'||SV[h]){filter=h;render()}});
+RL.onLang(render);
+render();
+})();
+</script>
+</body></html>

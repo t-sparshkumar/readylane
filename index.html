@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head>
+<html lang="en" data-title="ix.title"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ReadyLane by SmartQ Bank: the queue that only calls you when your work is done</title>
 <meta name="description" content="ReadyLane: bank branch queue that runs your service checklist in the background and calls you only when everything is ready, with a hard fairness cap.">
@@ -53,33 +53,47 @@
  <div class="container hero-grid">
   <div class="fade-up">
    <span class="eyebrow light">SmartQ Bank · ReadyLane</span>
-   <h1>The queue that only calls you when your work is <span class="hl">already done.</span></h1>
-   <p class="lead">Take a token and ReadyLane starts checking everything your service needs: documents, records, officer approval, cash at the counter and joint holders. You're only called when every check has passed. If something is missing, you hear about it straight away, before you reach the counter.</p>
+   <h1 data-i18n-html="ix.h1">The queue that only calls you when your work is <span class="hl">already done.</span></h1>
+   <p class="lead" data-i18n="ix.lead">Take a token and ReadyLane starts checking everything your service needs: documents, records, officer approval, cash at the counter and joint holders. You're only called when every check has passed. If something is missing, you hear about it straight away, before you reach the counter.</p>
    <div class="hero-ctas">
-    <a class="btn btn-gold" href="demo.html">▶ Try the customer demo</a>
-    <a class="btn btn-ghost" href="staff.html">See the fairness cap live</a>
+    <a class="btn btn-gold" href="demo.html" data-i18n="ix.cta1">▶ Try the customer demo</a>
+    <a class="btn btn-ghost" href="staff.html" data-i18n="ix.cta2">See the fairness cap live</a>
    </div>
    <div class="pill-row">
-    <span class="pill">✓ Readiness gate</span><span class="pill">⚖ Hard fairness cap</span><span class="pill">🎟 Paper token + QR</span><span class="pill">📺 Lobby TV + voice</span><span class="pill">💬 Bank mentor</span>
+    <span class="pill" data-i18n="ix.pill1">✓ Readiness gate</span><span class="pill" data-i18n="ix.pill2">⚖ Hard fairness cap</span><span class="pill" data-i18n="ix.pill3">🎟 Paper token + QR</span><span class="pill" data-i18n="ix.pill4">📺 Lobby TV + voice</span><span class="pill" data-i18n="ix.pill5">💬 Bank mentor</span><span class="pill" data-i18n="ix.pill6">🇮🇳 Hindi + easy mode</span>
    </div>
   </div>
   <div class="hero-visual">
    <div class="phone hero-phone"><div class="phone-notch"></div><div class="phone-screen">
-    <div class="app-top"><div style="font-size:.78rem;opacity:.8">Cash withdrawal · ₹3,00,000</div><div class="tk">C-19</div>
-     <span class="chip checking" style="background:rgba(255,255,255,.18);color:#fff">Checking · about 6 min</span></div>
+    <div class="app-top"><div style="font-size:.78rem;opacity:.8" data-i18n="ix.ph.svc">Cash withdrawal · ₹3,00,000</div><div class="tk">C-19</div>
+     <span class="chip checking" style="background:rgba(255,255,255,.18);color:#fff" data-i18n="ix.ph.chip">Checking · about 6 min</span></div>
     <div class="app-body">
      <ul class="checklist">
-      <li class="check pass"><span class="ic">✓</span><div><div class="t">Withdrawal slip verified</div><div class="d">Figures, words & signature</div></div></li>
-      <li class="check pass"><span class="ic">✓</span><div><div class="t">Records match</div><div class="d">Balance OK · specimen loaded</div></div></li>
-      <li class="check running"><span class="ic"></span><div><div class="t">Officer pre-approval</div><div class="d">Above ₹2,00,000 teller limit</div></div></li>
-      <li class="check"><span class="ic">4</span><div><div class="t">Cash ready (CashMatch)</div><div class="d">Drawer & denominations</div></div></li>
-      <li class="check"><span class="ic">5</span><div><div class="t">Joint holder present</div><div class="d">SyncToken check-in</div></div></li>
+      <li class="check pass"><span class="ic">✓</span><div><div class="t" data-i18n="ck.cw.docs.l">Withdrawal slip verified</div><div class="d" data-i18n="ix.ph.d1">Figures, words &amp; signature</div></div></li>
+      <li class="check pass"><span class="ic">✓</span><div><div class="t" data-i18n="ck.records.l">Records match</div><div class="d" data-i18n="ix.ph.d2">Balance OK · specimen loaded</div></div></li>
+      <li class="check running"><span class="ic"></span><div><div class="t" data-i18n="ck.appr.l">Officer pre-approval</div><div class="d" data-i18n="ix.ph.d3">Above ₹2,00,000 teller limit</div></div></li>
+      <li class="check"><span class="ic">4</span><div><div class="t" data-i18n="ck.cash.l">Cash ready (CashMatch)</div><div class="d" data-i18n="ix.ph.d4">Drawer &amp; denominations</div></div></li>
+      <li class="check"><span class="ic">5</span><div><div class="t" data-i18n="ix.ph.l5">Joint holder present</div><div class="d" data-i18n="ix.ph.d5">SyncToken check-in</div></div></li>
      </ul>
-     <p class="sim-note" style="margin-top:12px">Example screen (simulated)</p>
+     <p class="sim-note" style="margin-top:12px" data-i18n="ix.ph.note">Example screen (simulated)</p>
     </div></div></div>
-   <div class="float-card fc1"><span style="font-size:1.4rem">✆</span><div><b>Next: WhatsApp alert</b>"C-19, you're ready. Go to Counter 2"</div></div>
-   <div class="float-card fc2"><span style="font-size:1.4rem">⚖</span><div><b>Fair-Skip</b>Nobody is overtaken more than K times</div></div>
+   <div class="float-card fc1"><span style="font-size:1.4rem">✆</span><div data-i18n-html="ix.fc1"><b>Next: WhatsApp alert</b>"C-19, you're ready. Go to Counter 2"</div></div>
+   <div class="float-card fc2"><span style="font-size:1.4rem">⚖</span><div data-i18n-html="ix.fc2"><b>Fair-Skip</b>Nobody is overtaken more than K times</div></div>
   </div>
+ </div>
+</section>
+
+<!-- CUSTOMER QUICK START: big picture buttons, works for people who don't read well -->
+<section class="cust-start" id="start" aria-labelledby="custH">
+ <div class="container">
+  <div class="section-head center"><span class="eyebrow" data-i18n="ix.cust.eb">Are you a customer?</span><h2 id="custH" data-i18n="ix.cust.h">Start here</h2></div>
+  <div class="big-tiles">
+   <a class="big-tile" href="demo.html"><span class="bt-ic" aria-hidden="true">🎟</span><b data-i18n="ix.cust.t1">Take a token</b></a>
+   <a class="big-tile" href="documents.html"><span class="bt-ic" aria-hidden="true">📄</span><b data-i18n="ix.cust.t2">Forms &amp; documents</b></a>
+   <a class="big-tile" href="mentor.html"><span class="bt-ic" aria-hidden="true">💬</span><b data-i18n="ix.cust.t3">Ask a question</b></a>
+   <a class="big-tile" href="status.html"><span class="bt-ic" aria-hidden="true">▦</span><b data-i18n="ix.cust.t4">My token</b></a>
+  </div>
+  <div class="pic-steps" style="margin-top:22px"></div>
  </div>
 </section>
 
@@ -87,29 +101,29 @@
 <section id="problem">
  <div class="container grid g2" style="align-items:center;gap:48px">
   <div>
-   <span class="eyebrow">The problem</span>
-   <h2>Bank queues waste time even after you reach the counter.</h2>
+   <span class="eyebrow" data-i18n="ix.pr.eb">The problem</span>
+   <h2 data-i18n="ix.pr.h">Bank queues waste time even after you reach the counter.</h2>
    <ul class="list" style="margin:18px 0 22px">
-    <li>Long waits with no idea how long</li>
-    <li>Overcrowded counters at peak hours</li>
-    <li>Standing in line for long periods</li>
-    <li>Elderly and disabled customers struggle most</li>
+    <li data-i18n="ix.pr.1">Long waits with no idea how long</li>
+    <li data-i18n="ix.pr.2">Overcrowded counters at peak hours</li>
+    <li data-i18n="ix.pr.3">Standing in line for long periods</li>
+    <li data-i18n="ix.pr.4">Elderly and disabled customers struggle most</li>
    </ul>
-   <div class="callout"><b>Hidden pain:</b> you finally reach the counter and get sent back for a missing document or approval. The whole wait was wasted, and so was the teller's time.</div>
+   <div class="callout" data-i18n-html="ix.pr.call"><b>Hidden pain:</b> you finally reach the counter and get sent back for a missing document or approval. The whole wait was wasted, and so was the teller's time.</div>
   </div>
-  <img class="problem-img" src="assets/img/crowded-branch.jpg" alt="Crowded bank branch">
+  <img class="problem-img" src="assets/img/crowded-branch.jpg" alt="Crowded bank branch" data-i18n-alt="ix.pr.alt">
  </div>
 </section>
 
 <!-- WHAT EXISTS -->
 <section style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
  <div class="container">
-  <div class="section-head"><span class="eyebrow">What already exists</span><h2>Tokens and tracking are solved. Readiness isn't.</h2>
-   <p class="muted">Tokens and tracking alone are not patentable, so we needed something new.</p></div>
+  <div class="section-head"><span class="eyebrow" data-i18n="ix.ex.eb">What already exists</span><h2 data-i18n="ix.ex.h">Tokens and tracking are solved. Readiness isn't.</h2>
+   <p class="muted" data-i18n="ix.ex.p">Tokens and tracking alone are not patentable, so we needed something new.</p></div>
   <div class="grid g3">
-   <div class="card"><div class="icon-badge">🎫</div><h3>Queue systems</h3><p class="muted">Qmatic, Wavetec, Qminder offer QR tokens, wait-time estimates and live tracking. Wavetec adds priority rules and service-based routing.</p></div>
-   <div class="card"><div class="icon-badge">📜</div><h3>Queue & pre-staging patents</h3><p class="muted">US 11,676,080 and US 11,770,477 (tokens + ETA). US 9,432,804 and US 11,715,084 pre-stage bank transactions.</p></div>
-   <div class="card"><div class="icon-badge">🇮🇳</div><h3>India</h3><p class="muted">Application 202541030105 covers QR queues and ETA alerts. None of these make calling conditional on readiness while capping overtakes.</p></div>
+   <div class="card"><div class="icon-badge">🎫</div><h3 data-i18n="ix.ex.1h">Queue systems</h3><p class="muted" data-i18n="ix.ex.1p">Qmatic, Wavetec, Qminder offer QR tokens, wait-time estimates and live tracking. Wavetec adds priority rules and service-based routing.</p></div>
+   <div class="card"><div class="icon-badge">📜</div><h3 data-i18n="ix.ex.2h">Queue &amp; pre-staging patents</h3><p class="muted" data-i18n="ix.ex.2p">US 11,676,080 and US 11,770,477 (tokens + ETA). US 9,432,804 and US 11,715,084 pre-stage bank transactions.</p></div>
+   <div class="card"><div class="icon-badge">🇮🇳</div><h3 data-i18n="ix.ex.3h">India</h3><p class="muted" data-i18n="ix.ex.3p">Application 202541030105 covers QR queues and ETA alerts. None of these make calling conditional on readiness while capping overtakes.</p></div>
   </div>
  </div>
 </section>
@@ -117,33 +131,33 @@
 <!-- HOW IT WORKS -->
 <section id="how">
  <div class="container">
-  <div class="section-head center"><span class="eyebrow">How ReadyLane works</span><h2>From token to counter, already prepared</h2></div>
+  <div class="section-head center"><span class="eyebrow" data-i18n="ix.how.eb">How ReadyLane works</span><h2 data-i18n="ix.how.h">From token to counter, already prepared</h2></div>
   <div class="flow">
-   <div class="card"><h3>Take token, declare service</h3><p class="muted">Use the app, the kiosk or a staff helper. Paper tokens get a QR code.</p></div>
-   <div class="card"><h3>Checklist built for your service</h3><p class="muted">A ₹3L withdrawal needs officer approval and cash. A KYC update needs neither.</p></div>
-   <div class="card"><h3>Checks run while you wait</h3><p class="muted">If something is missing, you get an instant fix alert on your phone, SMS or the lobby screen.</p></div>
-   <div class="card"><h3>Token turns READY</h3><p class="muted">Called to a free counter (the one holding your cash, for withdrawals).</p></div>
-   <div class="card"><h3>Teller gets a prepared screen</h3><p class="muted">Documents, signature specimen and approval are already loaded, so service is faster.</p></div>
+   <div class="card"><h3 data-i18n="ix.how.1h">Take token, declare service</h3><p class="muted" data-i18n="ix.how.1p">Use the app, the kiosk or a staff helper. Paper tokens get a QR code.</p></div>
+   <div class="card"><h3 data-i18n="ix.how.2h">Checklist built for your service</h3><p class="muted" data-i18n="ix.how.2p">A ₹3L withdrawal needs officer approval and cash. A KYC update needs neither.</p></div>
+   <div class="card"><h3 data-i18n="ix.how.3h">Checks run while you wait</h3><p class="muted" data-i18n="ix.how.3p">If something is missing, you get an instant fix alert on your phone, SMS or the lobby screen.</p></div>
+   <div class="card"><h3 data-i18n="ix.how.4h">Token turns READY</h3><p class="muted" data-i18n="ix.how.4p">Called to a free counter (the one holding your cash, for withdrawals).</p></div>
+   <div class="card"><h3 data-i18n="ix.how.5h">Teller gets a prepared screen</h3><p class="muted" data-i18n="ix.how.5p">Documents, signature specimen and approval are already loaded, so service is faster.</p></div>
   </div>
   <div class="stage-bar" style="justify-content:center">
-   <span class="s">Issued</span>›<span class="s">Preparing</span>›<span class="s y">Ready</span>›<span class="s">Called</span>›<span class="s">Served</span>
+   <span class="s" data-i18n="stage.0">Issued</span>›<span class="s" data-i18n="stage.1">Preparing</span>›<span class="s y" data-i18n="stage.2">Ready</span>›<span class="s" data-i18n="stage.3">Called</span>›<span class="s" data-i18n="stage.4">Served</span>
   </div>
-  <p class="muted" style="text-align:center;margin-top:12px">ETA = remaining check time and expected counter wait, whichever is longer, since the checks run while you wait.</p>
+  <p class="muted" style="text-align:center;margin-top:12px" data-i18n="ix.how.eta">ETA = remaining check time and expected counter wait, whichever is longer, since the checks run while you wait.</p>
  </div>
 </section>
 
 <!-- CHECKLIST -->
 <section class="dark" id="checklist">
  <div class="container">
-  <div class="section-head"><span class="eyebrow light">The readiness checklist</span><h2>Five checks, applied only where they make sense</h2>
-   <p class="muted">Each service gets its own checklist. Nobody waits for a cash check on an address change.</p></div>
+  <div class="section-head"><span class="eyebrow light" data-i18n="ix.ck.eb">The readiness checklist</span><h2 data-i18n="ix.ck.h">Five checks, applied only where they make sense</h2>
+   <p class="muted" data-i18n="ix.ck.p">Each service gets its own checklist. Nobody waits for a cash check on an address change.</p></div>
   <div class="grid g3 ck-grid">
-   <div class="card"><h3><span class="icon-badge" style="margin:0">📄</span>Documents complete</h3><p class="muted">Scanned and verified, e.g. PAN or Form 60 for cash deposits above ₹50,000, or payee details on a DD form.</p><div class="applies">Applies to: every service</div></div>
-   <div class="card"><h3><span class="icon-badge" style="margin:0">🗂</span>Records match</h3><p class="muted">Core banking check: account status, balance, CKYC. The signature specimen is pre-loaded for the teller.</p><div class="applies">Applies to: every service</div></div>
-   <div class="card"><h3><span class="icon-badge" style="margin:0">✍</span>Officer pre-approval</h3><p class="muted">Requested in advance when the amount exceeds the teller limit (₹2,00,000 in this demo; set by bank policy), plus account opening and loan desk slots.</p><div class="applies">Applies to: large withdrawals, account opening, loan enquiry</div></div>
-   <div class="card"><h3><span class="icon-badge" style="margin:0">💰</span>Cash ready (CashMatch)</h3><p class="muted">Confirms a counter drawer has the amount in the right denominations and earmarks it, with a vault top-up if needed.</p><div class="applies">Applies to: cash withdrawals only</div></div>
-   <div class="card"><h3><span class="icon-badge" style="margin:0">👥</span>Everyone present (SyncToken)</h3><p class="muted">Joint holders, second applicants, nominee or caregiver check in on the same token.</p><div class="applies">Applies to: jointly-operated withdrawals, joint account opening</div></div>
-   <div class="card"><h3><span class="icon-badge" style="margin:0">⚡</span>Instant fix alerts</h3><p class="muted">If a check fails, the token shows <b>Action needed</b> with the exact fix (upload PAN, re-sign a slip). You keep your place.</p><div class="applies">Applies to: any failed check</div></div>
+   <div class="card"><h3><span class="icon-badge" style="margin:0">📄</span><span data-i18n="ix.ck.1h">Documents complete</span></h3><p class="muted" data-i18n="ix.ck.1p">Scanned and verified, e.g. PAN or Form 60 for cash deposits above ₹50,000, or payee details on a DD form.</p><div class="applies" data-i18n="ix.ck.1a">Applies to: every service</div></div>
+   <div class="card"><h3><span class="icon-badge" style="margin:0">🗂</span><span data-i18n="ix.ck.2h">Records match</span></h3><p class="muted" data-i18n="ix.ck.2p">Core banking check: account status, balance, CKYC. The signature specimen is pre-loaded for the teller.</p><div class="applies" data-i18n="ix.ck.2a">Applies to: every service</div></div>
+   <div class="card"><h3><span class="icon-badge" style="margin:0">✍</span><span data-i18n="ix.ck.3h">Officer pre-approval</span></h3><p class="muted" data-i18n="ix.ck.3p">Requested in advance when the amount exceeds the teller limit (₹2,00,000 in this demo; set by bank policy), plus account opening and loan desk slots.</p><div class="applies" data-i18n="ix.ck.3a">Applies to: large withdrawals, account opening, loan enquiry</div></div>
+   <div class="card"><h3><span class="icon-badge" style="margin:0">💰</span><span data-i18n="ix.ck.4h">Cash ready (CashMatch)</span></h3><p class="muted" data-i18n="ix.ck.4p">Confirms a counter drawer has the amount in the right denominations and earmarks it, with a vault top-up if needed.</p><div class="applies" data-i18n="ix.ck.4a">Applies to: cash withdrawals only</div></div>
+   <div class="card"><h3><span class="icon-badge" style="margin:0">👥</span><span data-i18n="ix.ck.5h">Everyone present (SyncToken)</span></h3><p class="muted" data-i18n="ix.ck.5p">Joint holders, second applicants, nominee or caregiver check in on the same token.</p><div class="applies" data-i18n="ix.ck.5a">Applies to: jointly-operated withdrawals, joint account opening</div></div>
+   <div class="card"><h3><span class="icon-badge" style="margin:0">⚡</span><span data-i18n="ix.ck.6h">Instant fix alerts</span></h3><p class="muted" data-i18n-html="ix.ck.6p">If a check fails, the token shows <b>Action needed</b> with the exact fix (upload PAN, re-sign a slip). You keep your place.</p><div class="applies" data-i18n="ix.ck.6a">Applies to: any failed check</div></div>
   </div>
  </div>
 </section>
@@ -152,24 +166,24 @@
 <section id="fairness">
  <div class="container grid g2" style="gap:44px;align-items:center">
   <div>
-   <span class="eyebrow">Fair-Skip Guarantee</span>
-   <h2>Ready customers go first. Nobody gets pushed back forever.</h2>
+   <span class="eyebrow" data-i18n="ix.fa.eb">Fair-Skip Guarantee</span>
+   <h2 data-i18n="ix.fa.h">Ready customers go first. Nobody gets pushed back forever.</h2>
    <ul class="list ok" style="margin:18px 0">
-    <li>Ready customers are served ahead of tokens that are still being checked</li>
-    <li>Every time a later token is served first, your <b>overtake counter</b> goes up by 1</li>
-    <li>At <b>K overtakes</b> your token is locked: nobody who arrived after you can be served before you</li>
-    <li>Max wait hit? The help desk resolves your pending items and the next suitable counter is reserved for you</li>
-    <li>Seniors and disabled customers keep priority within the ready lane</li>
+    <li data-i18n-html="ix.fa.1">Ready customers are served ahead of tokens that are still being checked</li>
+    <li data-i18n-html="ix.fa.2">Every time a later token is served first, your <b>overtake counter</b> goes up by 1</li>
+    <li data-i18n-html="ix.fa.3">At <b>K overtakes</b> your token is locked: nobody who arrived after you can be served before you</li>
+    <li data-i18n-html="ix.fa.4">Max wait hit? The help desk resolves your pending items and the next suitable counter is reserved for you</li>
+    <li data-i18n-html="ix.fa.5">Seniors and disabled customers keep priority within the ready lane</li>
    </ul>
-   <a class="btn btn-plum" href="staff.html">Watch it on the staff dashboard →</a>
+   <a class="btn btn-plum" href="staff.html" data-i18n="ix.fa.btn">Watch it on the staff dashboard →</a>
   </div>
   <div class="fair-demo card" id="fairDemo">
    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-    <b>Example with K = 3</b><button class="btn btn-sm btn-light" id="fairReplay">↻ Replay</button></div>
-   <p class="muted" style="font-size:.86rem;margin:6px 0 0">C-12 needs officer approval for ₹4.5L. Later customers who are already ready get served first, up to the cap.</p>
+    <b data-i18n="ix.fa.ex">Example with K = 3</b><button class="btn btn-sm btn-light" id="fairReplay" data-i18n="ix.fa.replay">↻ Replay</button></div>
+   <p class="muted" style="font-size:.86rem;margin:6px 0 0" data-i18n="ix.fa.p">C-12 needs officer approval for ₹4.5L. Later customers who are already ready get served first, up to the cap.</p>
    <div class="lane" id="fairLane"></div>
    <div id="fairMsg" style="font-weight:700;color:var(--plum);min-height:48px;margin-top:8px"></div>
-   <p class="sim-note">Legend: <span class="tok p" style="min-width:0;padding:2px 8px">checking</span> <span class="tok r" style="min-width:0;padding:2px 8px">ready</span> <span class="tok l" style="min-width:0;padding:2px 8px">locked</span></p>
+   <p class="sim-note"><span data-i18n="ix.fa.leg">Legend:</span> <span class="tok p" style="min-width:0;padding:2px 8px" data-i18n="ix.fa.l1">checking</span> <span class="tok r" style="min-width:0;padding:2px 8px" data-i18n="ix.fa.l2">ready</span> <span class="tok l" style="min-width:0;padding:2px 8px" data-i18n="ix.fa.l3">locked</span></p>
   </div>
  </div>
 </section>
@@ -177,15 +191,15 @@
 <!-- PHYSICAL TOKEN & INCLUSION -->
 <section style="background:#fff;border-top:1px solid var(--line)" id="physical">
  <div class="container">
-  <div class="section-head"><span class="eyebrow">Physical token · inclusive by design</span><h2>No smartphone? You still never stand and wait.</h2>
-   <p class="muted">The kiosk prints a smart paper token with the token number, queue position, estimated wait and a QR code. A staff helper or the kiosk scanner runs the document check, so you get the same ReadyLane benefit.</p></div>
+  <div class="section-head"><span class="eyebrow" data-i18n="ix.ph2.eb">Physical token · inclusive by design</span><h2 data-i18n="ix.ph2.h">No smartphone? You still never stand and wait.</h2>
+   <p class="muted" data-i18n="ix.ph2.p">The kiosk prints a smart paper token with the token number, queue position, estimated wait and a QR code. A staff helper or the kiosk scanner runs the document check, so you get the same ReadyLane benefit.</p></div>
   <div class="grid g2" style="gap:36px;align-items:center">
-   <img class="token-photo" src="assets/img/physical-token.jpg" alt="SmartQ Bank physical token A-24 with QR code">
+   <img class="token-photo" src="assets/img/physical-token.jpg" alt="SmartQ Bank physical token A-24 with QR code" data-i18n-alt="ix.ph2.alt">
    <div class="grid g2">
-    <div class="card"><div class="icon-badge">▦</div><h3>Scan the QR</h3><p class="muted">Opens the live token page in any phone browser. No app and no login needed.</p></div>
-    <div class="card"><div class="icon-badge">✆</div><h3>SMS / WhatsApp</h3><p class="muted">Add a phone number at the kiosk (optional) to get "action needed" and "you're called" alerts.</p></div>
-    <div class="card"><div class="icon-badge">📺</div><h3>Lobby TV + voice</h3><p class="muted">The screen shows every token as Checking, Ready, Called or Action needed. Calls are announced aloud.</p></div>
-    <div class="card"><div class="icon-badge">⏱</div><h3>5-minute grace window</h3><p class="muted">Stepped outside? Your call stays open for 5 minutes. If you miss it, you go on hold and keep your place, not to the back.</p></div>
+    <div class="card"><div class="icon-badge">▦</div><h3 data-i18n="ix.ph2.1h">Scan the QR</h3><p class="muted" data-i18n="ix.ph2.1p">Opens the live token page in any phone browser. No app and no login needed.</p></div>
+    <div class="card"><div class="icon-badge">✆</div><h3>SMS / WhatsApp</h3><p class="muted" data-i18n="ix.ph2.2p">Add a phone number at the kiosk (optional) to get "action needed" and "you're called" alerts.</p></div>
+    <div class="card"><div class="icon-badge">📺</div><h3 data-i18n="ix.ph2.3h">Lobby TV + voice</h3><p class="muted" data-i18n="ix.ph2.3p">The screen shows every token as Checking, Ready, Called or Action needed. Calls are announced aloud.</p></div>
+    <div class="card"><div class="icon-badge">⏱</div><h3 data-i18n="ix.ph2.4h">5-minute grace window</h3><p class="muted" data-i18n="ix.ph2.4p">Stepped outside? Your call stays open for 5 minutes. If you miss it, you go on hold and keep your place, not to the back.</p></div>
    </div>
   </div>
  </div>
@@ -195,15 +209,15 @@
 <section id="mentor-teaser">
  <div class="container grid g2" style="align-items:center;gap:40px">
   <div>
-   <span class="eyebrow">Bank mentor</span>
-   <h2>Not sure what to bring? Ask before you leave home.</h2>
-   <p class="muted">The ReadyLane mentor answers everyday banking questions: which documents you need to open an account, when PAN is required, how to update KYC, what a DD form needs. For anything else, you can hand over to a human branch mentor.</p>
-   <a class="btn btn-plum" href="mentor.html">💬 Open the mentor</a>
+   <span class="eyebrow" data-i18n="ix.mt.eb">Bank mentor</span>
+   <h2 data-i18n="ix.mt.h">Not sure what to bring? Ask before you leave home.</h2>
+   <p class="muted" data-i18n="ix.mt.p">The ReadyLane mentor answers everyday banking questions: which documents you need to open an account, when PAN is required, how to update KYC, what a DD form needs. For anything else, you can hand over to a human branch mentor.</p>
+   <div class="ctrls"><a class="btn btn-plum" href="mentor.html" data-i18n="ix.mt.btn">💬 Open the mentor</a><a class="btn btn-gold" href="documents.html" data-i18n="ix.mt.docs">📄 Download forms</a></div>
   </div>
   <div class="card">
    <div style="display:grid;gap:10px;font-size:.92rem">
-    <div style="justify-self:end;background:var(--plum);color:#fff;padding:10px 14px;border-radius:14px 14px 4px 14px;max-width:80%">Cash deposit 75,000 ke liye kya chahiye?</div>
-    <div style="background:#F6EFF4;padding:12px 14px;border-radius:14px 14px 14px 4px;max-width:90%"><b>Cash deposit above ₹50,000</b><br>Bring a filled deposit slip and your <b>PAN card</b>. If you don't have a PAN, fill <b>Form 60</b> (Income-tax Rule 114B).</div>
+    <div style="justify-self:end;background:var(--plum);color:#fff;padding:10px 14px;border-radius:14px 14px 4px 14px;max-width:80%" data-i18n="ix.mt.q">Cash deposit 75,000 ke liye kya chahiye?</div>
+    <div style="background:#F6EFF4;padding:12px 14px;border-radius:14px 14px 14px 4px;max-width:90%" data-i18n-html="ix.mt.a"><b>Cash deposit above ₹50,000</b><br>Bring a filled deposit slip and your <b>PAN card</b>. If you don't have a PAN, fill <b>Form 60</b> (Income-tax Rule 114B).</div>
    </div>
   </div>
  </div>
@@ -212,18 +226,18 @@
 <!-- PATENT -->
 <section class="dark" id="patent">
  <div class="container">
-  <div class="section-head"><span class="eyebrow light">Why it's patentable</span><h2>A new combination: readiness gate + fair-skip cap</h2></div>
+  <div class="section-head"><span class="eyebrow light" data-i18n="ix.pt.eb">Why it's patentable</span><h2 data-i18n="ix.pt.h">A new combination: readiness gate + fair-skip cap</h2></div>
   <div class="grid g2" style="gap:28px;align-items:start">
    <div class="grid" style="gap:14px">
-    <div class="card"><b>Pre-staging patents (US 9,432,804)</b><p class="muted" style="margin:4px 0 0">queue a prepared transaction but don't make calling depend on the checks.</p></div>
-    <div class="card"><b>US 9,786,004</b><p class="muted" style="margin:4px 0 0">flags missing documents but doesn't control the queue.</p></div>
-    <div class="card"><b>IBM US 10,552,880</b><p class="muted" style="margin:4px 0 0">reorders queues with no fairness guarantee.</p></div>
+    <div class="card"><b data-i18n="ix.pt.1b">Pre-staging patents (US 9,432,804)</b><p class="muted" style="margin:4px 0 0" data-i18n="ix.pt.1p">queue a prepared transaction but don't make calling depend on the checks.</p></div>
+    <div class="card"><b>US 9,786,004</b><p class="muted" style="margin:4px 0 0" data-i18n="ix.pt.2p">flags missing documents but doesn't control the queue.</p></div>
+    <div class="card"><b>IBM US 10,552,880</b><p class="muted" style="margin:4px 0 0" data-i18n="ix.pt.3p">reorders queues with no fairness guarantee.</p></div>
    </div>
    <div class="claim" style="color:var(--ink)">
-    <span class="tag">Claim 1</span>
-    <p style="font-size:1.1rem;font-weight:600;margin:12px 0">A token is callable <u>only when all readiness checks pass</u>. Tokens may be served out of arrival order <u>subject to a maximum-overtake limit</u>, and the prepared record is sent to the counter.</p>
+    <span class="tag" data-i18n="ix.pt.tag">Claim 1</span>
+    <p style="font-size:1.1rem;font-weight:600;margin:12px 0" data-i18n-html="ix.pt.claim">A token is callable <u>only when all readiness checks pass</u>. Tokens may be served out of arrival order <u>subject to a maximum-overtake limit</u>, and the prepared record is sent to the counter.</p>
     <div class="divider"></div>
-    <p class="muted" style="margin:0"><b>Dependent claims:</b> escalation at the cap, officer pre-approval, CashMatch, SyncToken, ETA model. Framed for technical effect (Patents Act, Section 3(k)).</p>
+    <p class="muted" style="margin:0" data-i18n-html="ix.pt.dep"><b>Dependent claims:</b> escalation at the cap, officer pre-approval, CashMatch, SyncToken, ETA model. Framed for technical effect (Patents Act, Section 3(k)).</p>
    </div>
   </div>
  </div>
@@ -232,22 +246,22 @@
 <!-- IMPACT -->
 <section id="impact">
  <div class="container">
-  <div class="section-head"><span class="eyebrow">Expected impact</span><h2>What we expect a pilot to show</h2>
-   <p class="muted"><b>Estimates from our deck, to be validated in a pilot.</b> These are projections, not measured results.</p></div>
+  <div class="section-head"><span class="eyebrow" data-i18n="ix.im.eb">Expected impact</span><h2 data-i18n="ix.im.h">What we expect a pilot to show</h2>
+   <p class="muted" data-i18n-html="ix.im.p"><b>Estimates from our deck, to be validated in a pilot.</b> These are projections, not measured results.</p></div>
   <div class="grid g4">
-   <div class="card"><div class="stat">20–40%</div><p class="muted">less counter time for document-heavy services <i>(estimate)</i></p></div>
-   <div class="card"><div class="stat">10–25%</div><p class="muted">more customers per counter-hour <i>(estimate)</i></p></div>
-   <div class="card"><div class="stat">Most</div><p class="muted">repeat visits ("come back with document X") avoided <i>(estimate)</i></p></div>
-   <div class="card"><div class="stat">≤ K</div><p class="muted">overtakes per customer: guaranteed by design, not an estimate</p></div>
+   <div class="card"><div class="stat">20–40%</div><p class="muted" data-i18n-html="ix.im.1">less counter time for document-heavy services <i>(estimate)</i></p></div>
+   <div class="card"><div class="stat">10–25%</div><p class="muted" data-i18n-html="ix.im.2">more customers per counter-hour <i>(estimate)</i></p></div>
+   <div class="card"><div class="stat" data-i18n="ix.im.3s">Most</div><p class="muted" data-i18n-html="ix.im.3">repeat visits ("come back with document X") avoided <i>(estimate)</i></p></div>
+   <div class="card"><div class="stat">≤ K</div><p class="muted" data-i18n="ix.im.4">overtakes per customer: guaranteed by design, not an estimate</p></div>
   </div>
-  <div class="card" style="margin-top:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap"><span class="icon-badge" style="margin:0">🧪</span><div><b>Pilot plan:</b> 1 branch. Measure counter time, repeat visits, wait time and overtake count.</div></div>
+  <div class="card" style="margin-top:22px;display:flex;gap:14px;align-items:center;flex-wrap:wrap"><span class="icon-badge" style="margin:0">🧪</span><div data-i18n-html="ix.im.pilot"><b>Pilot plan:</b> 1 branch. Measure counter time, repeat visits, wait time and overtake count.</div></div>
  </div>
 </section>
 
 <!-- PROTOTYPE -->
 <section style="background:#fff;border-top:1px solid var(--line)">
  <div class="container">
-  <div class="section-head"><span class="eyebrow">App prototype</span><h2>The mobile journey (design screens)</h2></div>
+  <div class="section-head"><span class="eyebrow" data-i18n="ix.pro.eb">App prototype</span><h2 data-i18n="ix.pro.h">The mobile journey (design screens)</h2></div>
   <div class="proto">
    <img src="assets/img/proto-1-select.jpg" alt="Select service"><img src="assets/img/proto-2-token.jpg" alt="Get smart token"><img src="assets/img/proto-3-tracking.jpg" alt="Live queue tracking"><img src="assets/img/proto-4-alert.jpg" alt="Turn alert"><img src="assets/img/proto-5-counter.jpg" alt="Counter allocation"><img src="assets/img/proto-6-features.jpg" alt="Additional features">
   </div>
@@ -257,41 +271,37 @@
 <!-- DEMO LINKS -->
 <section class="dark">
  <div class="container">
-  <div class="section-head center"><span class="eyebrow light">Live MVP</span><h2>Try every part of ReadyLane</h2><p class="muted">All screens share one simulated branch, so a token you take in the demo shows up on the lobby TV and the staff dashboard.</p></div>
+  <div class="section-head center"><span class="eyebrow light" data-i18n="ix.dl.eb">Live MVP</span><h2 data-i18n="ix.dl.h">Try every part of ReadyLane</h2><p class="muted" data-i18n="ix.dl.p">All screens share one simulated branch, so a token you take in the demo shows up on the lobby TV and the staff dashboard.</p></div>
   <div class="grid g3 demo-links">
-   <a class="card" href="demo.html"><div class="icon-badge">🎟</div><h3>Customer demo</h3><p class="muted">Pick a service, get a QR token and watch your checklist tick off.</p></a>
-   <a class="card" href="lobby.html"><div class="icon-badge">📺</div><h3>Lobby display</h3><p class="muted">The TV screen with live statuses and voice announcements.</p></a>
-   <a class="card" href="staff.html"><div class="icon-badge">🧑‍💼</div><h3>Staff dashboard</h3><p class="muted">Queue, early approvals, cash drawers and fairness-cap counters.</p></a>
-   <a class="card" href="status.html"><div class="icon-badge">▦</div><h3>Token status (QR)</h3><p class="muted">What a customer sees after scanning the paper token.</p></a>
-   <a class="card" href="mentor.html"><div class="icon-badge">💬</div><h3>Bank mentor</h3><p class="muted">Ask which documents you need, or talk to a human.</p></a>
-   <a class="card" href="#fairness"><div class="icon-badge">⚖</div><h3>Fairness cap explained</h3><p class="muted">How "ready first" stays fair for everyone.</p></a>
+   <a class="card" href="demo.html"><div class="icon-badge">🎟</div><h3 data-i18n="ix.dl.1h">Customer demo</h3><p class="muted" data-i18n="ix.dl.1p">Pick a service, get a QR token and watch your checklist tick off.</p></a>
+   <a class="card" href="lobby.html"><div class="icon-badge">📺</div><h3 data-i18n="ix.dl.2h">Lobby display</h3><p class="muted" data-i18n="ix.dl.2p">The TV screen with live statuses and voice announcements.</p></a>
+   <a class="card" href="staff.html"><div class="icon-badge">🧑‍💼</div><h3 data-i18n="ix.dl.3h">Staff dashboard</h3><p class="muted" data-i18n="ix.dl.3p">Queue, early approvals, cash drawers and fairness-cap counters.</p></a>
+   <a class="card" href="status.html"><div class="icon-badge">▦</div><h3 data-i18n="ix.dl.4h">Token status (QR)</h3><p class="muted" data-i18n="ix.dl.4p">What a customer sees after scanning the paper token.</p></a>
+   <a class="card" href="mentor.html"><div class="icon-badge">💬</div><h3 data-i18n="ix.dl.5h">Bank mentor</h3><p class="muted" data-i18n="ix.dl.5p">Ask which documents you need, or talk to a human.</p></a>
+   <a class="card" href="documents.html"><div class="icon-badge">📄</div><h3 data-i18n="ix.dl.6h">Documents &amp; forms</h3><p class="muted" data-i18n="ix.dl.6p">Download sample forms for every service, print them and fill them in by hand.</p></a>
   </div>
  </div>
 </section>
 
 <footer id="footer"></footer>
+<script src="assets/js/i18n.js"></script>
 <script src="assets/js/common.js"></script>
 <script>
 // Fair-skip explainer animation (K = 3). Step-by-step, no randomness.
 (function(){
  const lane=document.getElementById('fairLane'),msg=document.getElementById('fairMsg');
- const base=[['C-12','p','₹4.5L · approval'],['A-12','r','KYC'],['C-13','r','deposit'],['R-11','r','DD'],['A-13','r','address']];
- const steps=[
-  {serve:null,ov:0,m:'C-12 is waiting for officer approval. A-12, C-13, R-11 and A-13 are already ready.'},
-  {serve:'A-12',ov:1,m:'A-12 (ready) is served first. C-12 overtaken 1/3.'},
-  {serve:'C-13',ov:2,m:'C-13 is served. C-12 overtaken 2/3.'},
-  {serve:'R-11',ov:3,m:'R-11 is served. C-12 hits the cap 3/3 and is LOCKED: help desk escalates, next counter reserved.'},
-  {serve:'C-12',ov:3,m:'Approval is fast-tracked and C-12 is served next. A-13 cannot overtake it, even though A-13 was ready.'},
- ];
+ const base=[['C-12','p','ix.t.c12'],['A-12','r','ix.t.kyc'],['C-13','r','ix.t.dep'],['R-11','r','ix.t.dd'],['A-13','r','ix.t.addr']];
+ const steps=[{serve:null,ov:0,m:'ix.f0'},{serve:'A-12',ov:1,m:'ix.f1'},{serve:'C-13',ov:2,m:'ix.f2'},{serve:'R-11',ov:3,m:'ix.f3'},{serve:'C-12',ov:3,m:'ix.f4'}];
  let i=0,served=[],timer;
- function render(){const s=steps[i];if(s.serve)served.push(s.serve);
+ function render(){const s=steps[i];if(s.serve&&!served.includes(s.serve))served.push(s.serve);
   lane.innerHTML=base.map(([id,c,l])=>{let cls=c;if(id==='C-12'&&s.ov>=3)cls='l';if(served.includes(id))cls='s';
-   const extra=id==='C-12'?' · '+s.ov+'/3':'';return '<div class="tok '+cls+'">'+id+'<small>'+l+extra+'</small></div>'}).join('');
-  msg.textContent=s.m;}
+   const extra=id==='C-12'?' · '+s.ov+'/3':'';return '<div class="tok '+cls+'">'+id+'<small>'+RL.t(l)+extra+'</small></div>'}).join('');
+  msg.textContent=RL.t(s.m);}
  function play(){clearInterval(timer);i=0;served=[];render();timer=setInterval(()=>{i++;if(i>=steps.length){clearInterval(timer);return}render()},2200)}
  document.getElementById('fairReplay').onclick=play;
  const io=new IntersectionObserver(e=>{if(e[0].isIntersecting){play();io.disconnect()}});io.observe(lane);
  render();
+ RL.onLang(render); // re-draw the current step in the new language
 })();
 </script>
 </body></html>

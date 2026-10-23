@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head>
+<html lang="en" data-title="dm.title"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Customer demo · ReadyLane</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2211%22 fill=%22%23FFD24D%22/%3E%3Cpath d=%22M12 21l6 6 11-13%22 fill=%22none%22 stroke=%22%235A124C%22 stroke-width=%224%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
@@ -9,9 +9,9 @@
 @media (max-width:980px){.demo-grid{grid-template-columns:1fr}}
 .svc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 @media (max-width:640px){.svc-grid{grid-template-columns:repeat(2,1fr)}}
-.svc{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:12px 10px;cursor:pointer;text-align:left;font:inherit;transition:.15s}
+.svc{border:2px solid var(--line);background:#fff;border-radius:14px;padding:14px 10px;min-height:96px;cursor:pointer;text-align:center;font:inherit;transition:.15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
 .svc:hover{border-color:var(--plum-2)}
-.svc .e{font-size:1.4rem}.svc b{display:block;font-size:.86rem;margin-top:4px}
+.svc .e{font-size:2.1rem;line-height:1}.svc b{display:block;font-size:.9rem;line-height:1.2}
 .svc.sel{border-color:var(--plum);background:#FBF1F8;box-shadow:0 0 0 3px rgba(90,18,76,.12)}
 .field{display:grid;gap:6px;margin-top:16px}
 .field label{font-weight:700;font-size:.88rem}
@@ -21,109 +21,130 @@
 .toggle input{margin-top:4px;accent-color:var(--plum);width:18px;height:18px}
 .toggle small{display:block;color:var(--muted)}
 .preview{margin-top:16px;background:#FBF7FA;border:1px dashed var(--line);border-radius:12px;padding:12px 14px;font-size:.86rem}
-.preview ul{margin:6px 0 0;padding-left:18px}
+.preview ul{margin:6px 0 0;padding-left:0;list-style:none}.preview li{display:flex;gap:8px;align-items:flex-start;padding:3px 0}.preview li .pi{flex:none;width:1.4em;text-align:center}
+.preview .pv-h{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.preview .pv-sec{margin-top:10px}
+.step-h{display:flex;align-items:center;gap:10px;margin:22px 0 12px}.step-h:first-child{margin-top:0}
+.step-h .n{flex:none;width:36px;height:36px;border-radius:50%;background:var(--plum);color:#fff;display:grid;place-items:center;font-weight:800}
+.step-h h3{margin:0}
 .sim-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin-top:8px}
 .sim-bar select{font:inherit;padding:4px 8px;border-radius:8px;border:1px solid var(--line)}
 </style>
 </head><body>
 <header id="nav"></header>
 <div class="dark"><div class="container page-head">
- <span class="eyebrow light">Customer demo · kiosk / app</span>
- <h1 style="font-size:clamp(1.8rem,4vw,2.8rem)">Take a token. Watch ReadyLane get your work done.</h1>
- <p class="muted">Pick a service and take a token. The checklist runs in a simulated branch, sped up so 1 simulated minute takes about 1.5 seconds. Your token also appears on the <a href="lobby.html" style="color:var(--gold)">lobby TV</a> and the <a href="staff.html" style="color:var(--gold)">staff dashboard</a> (open them in another tab).</p>
+ <span class="eyebrow light" data-i18n="dm.eb">Customer demo · kiosk / app</span>
+ <h1 style="font-size:clamp(1.8rem,4vw,2.8rem)" data-i18n="dm.h1">Take a token. Watch ReadyLane get your work done.</h1>
+ <p class="muted easy-hide" data-i18n-html="dm.p">Pick a service and take a token. The checklist runs in a simulated branch, sped up so 1 simulated minute takes about 1.5 seconds. Your token also appears on the <a href="lobby.html" style="color:var(--gold)">lobby TV</a> and the <a href="staff.html" style="color:var(--gold)">staff dashboard</a> (open them in another tab).</p>
 </div></div>
 
 <div class="container" style="margin-top:28px">
  <div class="demo-grid">
   <!-- LEFT: kiosk form -->
   <div class="card" id="kiosk">
-   <h3>1 · What do you need today?</h3>
-   <div class="svc-grid" id="svcGrid"></div>
-   <p class="hint" id="svcBlurb" style="margin-top:10px"></p>
+   <div class="pic-steps"></div>
+   <div class="step-h"><span class="n" aria-hidden="true">1</span><h3 data-i18n="dm.s1">What do you need today?</h3></div>
+   <div class="svc-grid" id="svcGrid" role="group" aria-label="Services"></div>
+   <div class="hint" id="svcBlurb" style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap" data-speak-scope></div>
+   <div class="step-h"><span class="n" aria-hidden="true">2</span><h3 data-i18n="dm.s2">A few details</h3></div>
 
-   <div class="field" id="amountField"><label for="amount">Amount (₹)</label>
+   <div class="field" id="amountField"><label for="amount"><span aria-hidden="true">💰</span> <span data-i18n="dm.amount">Amount (₹)</span></label>
     <input class="input" id="amount" type="number" min="100" step="100" inputmode="numeric">
     <div class="hint" id="amountHint"></div></div>
 
    <label class="toggle" id="jointField"><input type="checkbox" id="joint"><span><b id="jointLabel">Joint account</b><small id="jointHelp"></small></span></label>
-   <label class="toggle"><input type="checkbox" id="senior"><span><b>Senior citizen / person with disability</b><small>Gets priority within the ready lane</small></span></label>
-   <label class="toggle" style="border-color:#F6C2C7"><input type="checkbox" id="problem"><span><b>Simulate a missing item</b><small id="problemHelp"></small></span></label>
+   <label class="toggle"><input type="checkbox" id="senior"><span><b><span aria-hidden="true">🧓♿</span> <span data-i18n="dm.senior">Senior citizen / person with disability</span></b><small data-i18n="dm.seniorH">Gets priority within the ready lane</small></span></label>
+   <label class="toggle" style="border-color:#F6C2C7"><input type="checkbox" id="problem"><span><b><span aria-hidden="true">❌</span> <span data-i18n="dm.problem">Simulate a missing item</span></b><small id="problemHelp"></small></span></label>
 
-   <div class="field"><label for="phone">Mobile number for SMS / WhatsApp alerts <span class="muted" style="font-weight:500">(optional)</span></label>
-    <input class="input" id="phone" type="tel" maxlength="10" placeholder="10-digit mobile number (demo, nothing is sent)" inputmode="numeric">
+   <div class="field"><label for="phone"><span aria-hidden="true">📱</span> <span data-i18n-html="dm.phone">Mobile number for SMS / WhatsApp alerts <span class="muted" style="font-weight:500">(optional)</span></span></label>
+    <input class="input" id="phone" type="tel" maxlength="10" placeholder="10-digit mobile number (demo, nothing is sent)" data-i18n-ph="dm.phonePh" inputmode="numeric">
     <div class="hint" id="phoneHint">Without a number you still get the paper token, the QR page, the lobby screen and voice calls.</div></div>
 
-   <div class="preview" id="preview"></div>
-   <div class="ctrls"><button class="btn btn-plum" id="issueBtn">🎟 Take token</button></div>
+   <div class="preview" id="preview" data-speak-scope></div>
+   <div class="step-h"><span class="n" aria-hidden="true">3</span><h3 data-i18n="dm.s3">Take your token</h3></div>
+   <div class="ctrls" style="margin-top:0"><button class="btn btn-plum btn-big" id="issueBtn" data-i18n="dm.take">🎟 Take token</button></div>
   </div>
 
   <!-- RIGHT: phone -->
   <div>
    <div class="phone"><div class="phone-notch"></div><div class="phone-screen" id="phoneScreen">
-    <div class="app-top"><div style="font-size:.8rem;opacity:.8">SmartQ Bank · ReadyLane</div><div style="font-weight:800;font-size:1.3rem;margin-top:4px">Your token</div></div>
-    <div class="app-body" id="tokenView"><div class="empty">🎟<br>Take a token on the left to start.</div></div>
+    <div class="app-top"><div style="font-size:.8rem;opacity:.8">SmartQ Bank · ReadyLane</div><div style="font-weight:800;font-size:1.3rem;margin-top:4px" data-i18n="dm.your">Your token</div></div>
+    <div class="app-body" id="tokenView" aria-live="polite"></div>
    </div></div>
    <div class="sim-bar" style="justify-content:center"><span id="simInfo">Simulated branch</span>
-    <label>Speed <select id="speed"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select></label></div>
+    <label><span data-i18n="dm.speed">Speed</span> <select id="speed"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select></label></div>
   </div>
  </div>
 </div>
 <footer id="footer"></footer>
+<script src="assets/js/i18n.js"></script>
 <script src="assets/vendor/qrcode.js"></script>
 <script src="assets/js/common.js"></script>
 <script src="assets/js/engine.js"></script>
+<script src="assets/js/docs.js"></script>
 <script src="assets/js/tokenview.js"></script>
 <script>
 const S=RL.SERVICES, inr=RL.inr, esc=RL.esc;
 const DEF_AMT={cash_withdrawal:300000,cash_deposit:75000,demand_draft:25000,fixed_deposit:100000};
 const MIN_AMT={cash_withdrawal:100,cash_deposit:100,demand_draft:100,fixed_deposit:1000};
-let svc='cash_deposit';
+const qs=new URLSearchParams(location.search).get('s');
+let svc=S[qs]?qs:'cash_deposit';
 const $=id=>document.getElementById(id);
+const t=(k,p)=>RL.t(k,p);
 
 function renderSvcs(){
- $('svcGrid').innerHTML=Object.entries(S).map(([k,v])=>'<button class="svc'+(k===svc?' sel':'')+'" data-k="'+k+'"><span class="e">'+v.icon+'</span><b>'+v.name+'</b></button>').join('');
- $('svcGrid').querySelectorAll('.svc').forEach(b=>b.onclick=()=>{svc=b.dataset.k;$('amount').value=DEF_AMT[svc]||'';$('joint').checked=false;renderSvcs();updateForm()});
+ $('svcGrid').innerHTML=Object.entries(S).map(([k,v])=>'<button type="button" class="svc'+(k===svc?' sel':'')+'" data-k="'+k+'" aria-pressed="'+(k===svc)+'"><span class="e" aria-hidden="true">'+v.icon+'</span><b>'+esc(RL.svcName(k))+'</b></button>').join('');
+ $('svcGrid').querySelectorAll('.svc').forEach(b=>b.onclick=()=>{svc=b.dataset.k;$('amount').value=DEF_AMT[svc]||'';$('joint').checked=false;renderSvcs();updateForm();
+   if(RL.easy)RL.speak(RL.svcName(svc))});
 }
 function opts(){return{amount:S[svc].amount?Math.round(+$('amount').value||0):0,joint:S[svc].joint&&$('joint').checked,senior:$('senior').checked,problem:$('problem').checked,phone:$('phone').value.trim()}}
 function updateForm(){
- const v=S[svc];$('svcBlurb').textContent=v.blurb;
+ const v=S[svc];
+ $('svcBlurb').innerHTML='<span>'+esc(RL.svcBlurb(svc))+'</span>'+RL.listenBtn();
  $('amountField').style.display=v.amount?'':'none';
  $('jointField').style.display=v.joint?'':'none';
- if(svc==='cash_withdrawal'){$('jointLabel').textContent='Joint account operated "jointly"';$('jointHelp').textContent='All holders must sign, so the co-holder has to check in. ("Either or survivor" accounts don\'t need this.)'}
- if(svc==='account_opening'){$('jointLabel').textContent='Joint account (2 applicants)';$('jointHelp').textContent='Both applicants must be present for in-person verification'}
+ if(svc==='cash_withdrawal'){$('jointLabel').textContent=t('dm.jointW.l');$('jointHelp').textContent=t('dm.jointW.h')}
+ if(svc==='account_opening'){$('jointLabel').textContent=t('dm.jointA.l');$('jointHelp').textContent=t('dm.jointA.h')}
  const o=opts();
  let h='';
- if(svc==='cash_withdrawal')h=o.amount>RL.TELLER_LIMIT?'Above the teller limit of '+inr(RL.TELLER_LIMIT)+', so officer pre-approval will be requested in advance.':'Within the teller limit ('+inr(RL.TELLER_LIMIT)+'), so no officer approval is needed. PAN is not needed to withdraw from your own account.';
- if(svc==='cash_deposit')h=o.amount>RL.PAN_CASH_LIMIT?'Above '+inr(RL.PAN_CASH_LIMIT)+', so PAN (or Form 60) is mandatory (Income-tax Rule 114B).':'Up to '+inr(RL.PAN_CASH_LIMIT)+', no PAN needed for a cash deposit.';
- if(svc==='demand_draft')h='Debited from your account. DDs of ₹50,000 or more cannot be bought with cash (RBI).';
- if(svc==='fixed_deposit')h='Funded from your savings account.';
+ if(svc==='cash_withdrawal')h=t(o.amount>RL.TELLER_LIMIT?'dm.h.cwOver':'dm.h.cwUnder',{lim:inr(RL.TELLER_LIMIT)});
+ if(svc==='cash_deposit')h=t(o.amount>RL.PAN_CASH_LIMIT?'dm.h.cdOver':'dm.h.cdUnder',{lim:inr(RL.PAN_CASH_LIMIT)});
+ if(svc==='demand_draft')h=t('dm.h.dd');
+ if(svc==='fixed_deposit')h=t('dm.h.fd');
  $('amountHint').textContent=h;
  const P=v.problem, alt=P.needsAmountAbove&&o.amount<=P.needsAmountAbove;
- $('problemHelp').textContent='Shows the "Action needed" flow: '+(alt?P.altMsg:P.msg);
- // checklist preview
+ $('problemHelp').textContent=t('dm.problemHelp',{msg:t(P.k+(alt?'.alt':'')+'.msg')});
+ // checklist preview + what to bring + forms (same rules as the engine and the Documents page)
  const C=RL.buildChecks(svc,Object.assign({},o,{problem:false}));
- const all=['docs','records','approval','cash','sync'],names={docs:'Documents',records:'Records match',approval:'Officer pre-approval',cash:'Cash ready (CashMatch)',sync:'Everyone present (SyncToken)'};
- const skipped=all.filter(t=>!C.some(c=>c.type===t)).map(t=>names[t]);
- $('preview').innerHTML='<b>Your readiness checklist ('+C.length+' checks)</b><ul>'+C.map(c=>'<li>'+esc(c.label)+'</li>').join('')+'</ul>'+(skipped.length?'<div class="hint" style="margin-top:6px">Not needed for this service: '+skipped.join(', ')+'</div>':'');
+ const PIC={docs:'📄',records:'🗂',approval:'✍',cash:'💰',sync:'👥'};
+ const skipped=Object.keys(PIC).filter(k=>!C.some(c=>c.type===k)).map(k=>t('ct.'+k));
+ const bring=RL.bringList(svc,o),forms=RL.formsFor(svc);
+ $('preview').innerHTML='<div class="pv-h"><b>'+t('dm.bring')+'</b>'+RL.listenBtn()+'</div><ul>'+bring.map(b=>'<li><span class="pi" aria-hidden="true">'+b.ic+'</span><span>'+esc(b.text)+'</span></li>').join('')+'</ul>'+
+  '<div class="pv-sec no-speak"><b>'+t('dm.forms')+'</b><div class="ctrls" style="margin-top:6px">'+forms.map(f=>RL.formLink(f.id)).join('')+'<a class="btn btn-sm btn-light" href="documents.html#'+svc+'">📄 '+t('nav.documents')+'</a></div></div>'+
+  '<div class="pv-sec"><b>'+t('dm.preview',{n:C.length})+'</b><ul>'+C.map(c=>'<li><span class="pi" aria-hidden="true">'+PIC[c.type]+'</span><span>'+esc(RL.ckLabel(c))+'</span></li>').join('')+'</ul>'+(skipped.length?'<div class="hint easy-hide" style="margin-top:6px">'+t('dm.notNeeded',{list:skipped.join(', ')})+'</div>':'')+'</div>';
  const bad=v.amount&&(!o.amount||o.amount<MIN_AMT[svc]);
- $('issueBtn').disabled=bad;$('amountHint').className='hint'+(bad?' warn':'');if(bad)$('amountHint').textContent='Enter an amount of at least '+inr(MIN_AMT[svc])+'.';
+ $('issueBtn').disabled=bad;$('amountHint').className='hint'+(bad?' warn':'');if(bad)$('amountHint').textContent=t('dm.h.min',{min:inr(MIN_AMT[svc])});
  const ph=$('phone').value.trim();$('phoneHint').className='hint'+(ph&&!/^[6-9]\d{9}$/.test(ph)?' warn':'');
- if(ph&&!/^[6-9]\d{9}$/.test(ph)){$('phoneHint').textContent='Enter a valid 10-digit Indian mobile number, or leave it blank.';$('issueBtn').disabled=true}
- else $('phoneHint').textContent='Without a number you still get the paper token, the QR page, the lobby screen and voice calls.';
+ if(ph&&!/^[6-9]\d{9}$/.test(ph)){$('phoneHint').textContent=t('dm.phoneBad');$('issueBtn').disabled=true}
+ else $('phoneHint').textContent=t('dm.phoneOk');
 }
 ['amount','joint','senior','problem','phone'].forEach(id=>$(id).addEventListener('input',updateForm));
-$('problem').checked=true;$('amount').value=DEF_AMT[svc];
+$('problem').checked=true;$('amount').value=DEF_AMT[svc]||'';
 renderSvcs();updateForm();
+RL.onLang(()=>{renderSvcs();updateForm();lastSim=''});
 
-$('issueBtn').onclick=()=>{const tk=RL.issueMine(svc,opts());RL.toast('sys','Token '+tk.id+' issued','Checks have started. Scan the QR to follow your token on your phone.');
+$('issueBtn').onclick=()=>{const tk=RL.issueMine(svc,opts());RL.toast('sys',t('dm.issued.t',{id:tk.id}),t('dm.issued.b'));
  if(window.innerWidth<980)document.querySelector('.phone').scrollIntoView({behavior:'smooth'})};
 $('speed').onchange=e=>RL.setSpeed(+e.target.value);
 
-const view=RL.TokenView($('tokenView'),{paper:true,interactive:true,notify:true,againHref:'#kiosk',empty:'<div class="empty">🎟<br>Take a token on the left to start.</div>'});
+const view=RL.TokenView($('tokenView'),{paper:true,interactive:true,notify:true,againHref:'#kiosk',empty:'<div class="empty"></div>'});
+let lastSim='';
 function render(st){
- $('simInfo').textContent='Simulated branch · '+st.counters.length+' counters · fairness cap K = '+st.K+(st.paused?' · PAUSED on staff dashboard':'');
+ const si=t('dm.sim',{n:st.counters.length,K:st.K})+(st.paused?t('dm.paused'):'');if(si!==lastSim){lastSim=si;$('simInfo').textContent=si}
  $('speed').value=String(st.speed||1);
- view(st,RL.mine());
+ const m=RL.mine();
+ if(!m){const e='<div class="empty">'+t('dm.empty')+'</div>';if($('tokenView').innerHTML!==e){view(st,null);$('tokenView').innerHTML=e}}
+ else view(st,m);
 }
 RL.onChange(render);RL.start();
 </script>

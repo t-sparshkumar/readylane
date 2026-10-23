@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head>
+<html lang="en" data-title="lb.title"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Lobby display · ReadyLane</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2211%22 fill=%22%23FFD24D%22/%3E%3Cpath d=%22M12 21l6 6 11-13%22 fill=%22none%22 stroke=%22%235A124C%22 stroke-width=%224%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22/%3E%3C/svg%3E">
@@ -49,55 +49,63 @@ body.tvmode #nav{display:none}
 </head><body>
 <header id="nav"></header>
 <div class="tv">
- <div class="tv-top"><a class="brand" href="index.html" id="tvBrand"></a><span class="pill">Branch lobby display</span><span class="pill" id="kInfo"></span><button class="btn btn-sm btn-gold" id="voiceBtn">🔈 Enable voice announcements</button><button class="btn btn-sm btn-ghost" id="fsBtn" style="color:#fff">⛶ TV mode</button>
+ <div class="tv-top"><a class="brand" href="index.html" id="tvBrand"></a><span class="pill" data-i18n="lb.pill">Branch lobby display</span><span class="pill" id="kInfo"></span><button class="btn btn-sm btn-gold" id="voiceBtn">🔈 Enable voice announcements</button><button class="btn btn-sm btn-ghost" id="fsBtn" style="color:#fff">⛶ TV mode</button>
   <div class="clock" id="clock">--:--<small>SIMULATED TIME</small></div></div>
  <div class="calling">
-  <div class="now" id="now"><div><div class="lbl">Now calling</div><div class="big" id="nowTk">—</div></div><div><div class="to" id="nowTo">Waiting for the first call…</div><div class="hi" id="nowHi"></div></div></div>
+  <div class="now" id="now"><div><div class="lbl" data-i18n="lb.now">Now calling</div><div class="big" id="nowTk">—</div></div><div><div class="to" id="nowTo" data-i18n="lb.first">Waiting for the first call…</div><div class="hi" id="nowHi"></div></div></div>
   <div class="counters" id="counters"></div>
  </div>
  <div class="board-wrap" id="board"></div>
- <div class="ticker"><span style="font-weight:800;color:var(--gold);flex:none">ℹ READYLANE</span><span style="overflow:hidden;flex:1"><span class="marq">You are called only when all your checks have passed, so please stay seated. · Action needed? Scan the QR on your token or visit the help desk; you keep your place. · Missed your call? You have a 5-minute grace window, then you go on hold without losing your place. · Nobody is overtaken more than K times (Fair-Skip Guarantee). · Seniors and persons with disability have priority.</span></span></div>
+ <div class="ticker"><span style="font-weight:800;color:var(--gold);flex:none">ℹ READYLANE</span><span style="overflow:hidden;flex:1"><span class="marq" data-i18n="lb.ticker">You are called only when all your checks have passed, so please stay seated. · Action needed? Scan the QR on your token or visit the help desk; you keep your place. · Missed your call? You have a 5-minute grace window, then you go on hold without losing your place. · Nobody is overtaken more than K times (Fair-Skip Guarantee). · Seniors and persons with disability have priority.</span></span></div>
 </div>
+<script src="assets/js/i18n.js"></script>
 <script src="assets/vendor/qrcode.js"></script>
 <script src="assets/js/common.js"></script>
 <script src="assets/js/engine.js"></script>
 <script>
-document.getElementById('tvBrand').innerHTML=RL.MARK+'<span>ReadyLane<small>by SmartQ Bank</small></span>';
-let voice=false,lastAnn=null,lastHtml='';
-const vb=document.getElementById('voiceBtn');
-vb.onclick=()=>{voice=!voice;vb.textContent=voice?'🔊 Voice on':'🔈 Enable voice announcements';if(voice&&'speechSynthesis' in window){const u=new SpeechSynthesisUtterance('Voice announcements enabled');u.lang='en-IN';speechSynthesis.speak(u)}
- if(!('speechSynthesis' in window)){vb.textContent='Voice not supported in this browser';vb.disabled=true}};
-document.getElementById('fsBtn').onclick=()=>{const on=document.body.classList.toggle('tvmode');document.getElementById('fsBtn').textContent=on?'✕ Exit TV mode':'⛶ TV mode';
- try{if(on&&document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();else if(!on&&document.fullscreenElement)document.exitFullscreen()}catch(e){}};
-document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&document.body.classList.contains('tvmode')){document.body.classList.remove('tvmode');document.getElementById('fsBtn').textContent='⛶ TV mode'}});
+const t=(k,p,l)=>RL.t(k,p,l);
+const other=()=>RL.lang==='hi'?'en':'hi';
+const brand=()=>document.getElementById('tvBrand').innerHTML=RL.MARK+'<span>ReadyLane<small>'+t('brand.by')+'</small></span>';brand();
+let voice=false,lastAnn=null,lastHtml='',curAnn=null,tv=false;
+const vb=document.getElementById('voiceBtn'),fb=document.getElementById('fsBtn');
+function labels(){vb.textContent=!RL.canSpeak?t('lb.voiceNo'):voice?t('lb.voiceOn'):t('lb.voiceOff');vb.disabled=!RL.canSpeak;fb.textContent=tv?t('lb.tvExit'):t('lb.tv')}
+vb.onclick=()=>{voice=!voice;labels();if(voice)RL.speak(t('lb.enabled'))};
+fb.onclick=()=>{tv=document.body.classList.toggle('tvmode');labels();
+ try{if(tv&&document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();else if(!tv&&document.fullscreenElement)document.exitFullscreen()}catch(e){}};
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&tv){document.body.classList.remove('tvmode');tv=false;labels()}});
+// announcement: spoken in the language chosen with the EN / हिंदी toggle only
 function say(id,c){
- if(!voice||!('speechSynthesis' in window))return;
+ if(!voice)return;
  const spoken=id.replace('-',' ').split('').join(' ').replace(/\s+/g,' ');
- const u=new SpeechSynthesisUtterance('Token '+spoken+', please go to counter '+c);u.lang='en-IN';u.rate=.9;speechSynthesis.speak(u);
- const hv=speechSynthesis.getVoices().find(v=>/hi(-|_)IN/i.test(v.lang));
- if(hv){const h=new SpeechSynthesisUtterance('टोकन '+id.replace('-',' ')+', कृपया काउंटर '+c+' पर जाएँ');h.voice=hv;h.lang=hv.lang;speechSynthesis.speak(h)}
+ RL.speak(t('lb.say',{id:spoken,c}),{queue:true});
 }
+function showAnn(){if(!curAnn)return;
+ document.getElementById('nowTk').textContent=curAnn.id;
+ const to=document.getElementById('nowTo');to.removeAttribute('data-i18n');to.textContent=t('lb.goto',{c:curAnn.counter});
+ document.getElementById('nowHi').textContent=t('lb.goto',{c:curAnn.counter},other());}
+RL.onLang(()=>{brand();labels();showAnn();lastHtml='';lastClock=''});
+labels();
+let lastClock='';
 function render(st){
- document.getElementById('clock').innerHTML=RL.simClock(st.now)+'<small>SIMULATED TIME</small>';
- document.getElementById('kInfo').textContent='Fair-Skip cap K = '+st.K;
+ const ck=RL.simClock(st.now)+'<small>'+t('lb.simtime')+'</small>';if(ck!==lastClock){document.getElementById('clock').innerHTML=ck;lastClock=ck}
+ document.getElementById('kInfo').textContent=t('lb.k',{K:st.K});
  const a=st.announce[0];
  if(a&&a.k!==lastAnn){
-  const first=lastAnn===null;lastAnn=a.k;
-  document.getElementById('nowTk').textContent=a.id;document.getElementById('nowTo').textContent='Please go to Counter '+a.counter;
-  document.getElementById('nowHi').textContent='कृपया काउंटर '+a.counter+' पर जाएँ';
+  const first=lastAnn===null;lastAnn=a.k;curAnn=a;showAnn();
   const n=document.getElementById('now');n.classList.remove('flash');void n.offsetWidth;n.classList.add('flash');
   if(!first)say(a.id,a.counter);
  }
- const ctr=st.counters.map(c=>{const t=c.busy&&st.tokens.find(x=>x.id===c.busy);
-  if(t)return '<div class="ctr '+(t.state==='called'?'called':'')+'"><div class="n">Counter '+c.id+'</div><div class="v">'+t.id+'</div><div class="s">'+(t.state==='called'?'Called, please come':'Serving')+'</div></div>';
-  if(c.reservedFor)return '<div class="ctr reserved"><div class="n">Counter '+c.id+'</div><div class="v">'+c.reservedFor+'</div><div class="s">Reserved (fairness cap)</div></div>';
-  return '<div class="ctr"><div class="n">Counter '+c.id+'</div><div class="v">—</div><div class="s">Free</div></div>'}).join('');
- const groups=[['checking','Checking','#3B6FE0',['checking']],['action','Action needed','#D9414E',['action','held']],['ready','Ready','#14A06F',['ready']],['called','Called','#FFD24D',['called']]];
- const board=groups.map(([k,l,col,states])=>{const T=st.tokens.filter(t=>states.includes(t.state)).sort((a,b)=>a.seq-b.seq);
-  return '<div class="col '+k+'"><h3><span class="dot" style="background:'+col+'"></span>'+l+'<span class="count">'+T.length+'</span></h3>'+
-   (T.length?T.map(t=>'<div class="tile'+(t.locked?' prio':'')+'"><b>'+t.id+'</b><span>'+
-     (k==='checking'?RL.SERVICES[t.service].name+'<br>~'+RL.eta(t)+' min':k==='action'?(t.state==='held'?'On hold, missed call':'See your phone<br>or help desk'):k==='ready'?(t.senior?'Priority':'Next counter')+'<br>~'+RL.eta(t)+' min':'Counter '+t.counter)+
-     (t.locked?'<br>⚖ Cap priority':'')+'</span></div>').join(''):'<div style="opacity:.5;font-size:.85rem">None</div>')+'</div>'}).join('');
+ const C=c=>t('lb.counter',{c});
+ const ctr=st.counters.map(c=>{const tk=c.busy&&st.tokens.find(x=>x.id===c.busy);
+  if(tk)return '<div class="ctr '+(tk.state==='called'?'called':'')+'"><div class="n">'+C(c.id)+'</div><div class="v">'+tk.id+'</div><div class="s">'+(tk.state==='called'?'🔔 '+t('lb.calledCome'):t('lb.serving'))+'</div></div>';
+  if(c.reservedFor)return '<div class="ctr reserved"><div class="n">'+C(c.id)+'</div><div class="v">'+c.reservedFor+'</div><div class="s">'+t('lb.reserved')+'</div></div>';
+  return '<div class="ctr"><div class="n">'+C(c.id)+'</div><div class="v">—</div><div class="s">'+t('lb.free')+'</div></div>'}).join('');
+ const groups=[['checking','⏳','#3B6FE0',['checking']],['action','❌','#D9414E',['action','held']],['ready','✅','#14A06F',['ready']],['called','🔔','#FFD24D',['called']]];
+ const board=groups.map(([k,ic,col,states])=>{const T=st.tokens.filter(x=>states.includes(x.state)).sort((a,b)=>a.seq-b.seq);
+  return '<div class="col '+k+'"><h3><span class="dot" style="background:'+col+'"></span><span aria-hidden="true">'+ic+'</span> '+t('lb.g.'+k)+'<span class="count">'+T.length+'</span></h3>'+
+   (T.length?T.map(x=>'<div class="tile'+(x.locked?' prio':'')+'"><b>'+x.id+'</b><span>'+
+     (k==='checking'?RL.SERVICES[x.service].icon+' '+RL.svcName(x.service)+'<br>'+t('tv.min',{m:RL.eta(x)}):k==='action'?(x.state==='held'?t('lb.heldTile'):t('lb.seePhone')):k==='ready'?(x.senior?t('tv.priority'):t('lb.next'))+'<br>'+t('tv.min',{m:RL.eta(x)}):C(x.counter))+
+     (x.locked?'<br>'+t('lb.capPrio'):'')+'</span></div>').join(''):'<div style="opacity:.5;font-size:.85rem">'+t('lb.none')+'</div>')+'</div>'}).join('');
  const html=ctr+'|'+board;if(html===lastHtml)return;lastHtml=html;
  document.getElementById('counters').innerHTML=ctr;document.getElementById('board').innerHTML=board;
 }
