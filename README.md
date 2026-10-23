@@ -16,9 +16,8 @@ then open `http://<your-laptop-ip>:8000/` (the QR encodes the page URL).
 - `mentor.html`: bank mentor chat (local knowledge base, plus a simulated human mentor)
 - `documents.html`: documents & forms: one card per service with what to bring, printable sample PDF forms (`assets/docs/`), search and a filter by service (`documents.html#cash_deposit`)
 
-## Language, easy mode, accessibility
+## Language and accessibility
 - **EN / हिंदी** toggle in the nav of every page (saved in localStorage `readylane.lang`). All text, including engine messages, the lobby voice (hi-IN / en-IN) and the mentor answers, comes from one dictionary in `assets/js/i18n.js` (`data-i18n` attributes plus `RL.t()`).
-- **Easy mode** (👁 in the nav, saved as `readylane.easy`): bigger text and buttons (tap targets of 48px or more), less text, a bigger token number.
 - Picture steps, ✅ ⏳ ❌ status words, and 🔊 Listen buttons (browser speech synthesis) on the token, the documents, the mentor and the steps.
 
 ## Sample forms
