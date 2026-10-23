@@ -6,7 +6,7 @@
 (function(){
 const LS_LANG='readylane.lang', LS_EASY='readylane.easy';
 let lang=(()=>{try{return localStorage.getItem(LS_LANG)==='hi'?'hi':'en'}catch(e){return 'en'}})();
-let easy=(()=>{try{return localStorage.getItem(LS_EASY)==='1'}catch(e){return false}})();
+let easy=false;try{localStorage.removeItem(LS_EASY)}catch(e){}
 const D={
 /* ---- nav / shell ---- */
 'nav.index':['Overview','परिचय'],'nav.demo':['Take token','टोकन लें'],'nav.status':['My token','मेरा टोकन'],
@@ -328,7 +328,7 @@ const HI={
 'ix.h1':'वह कतार जो आपको तभी बुलाती है जब आपका काम <span class="hl">पहले से तैयार हो।</span>',
 'ix.lead':'टोकन लेते ही ReadyLane आपकी सेवा के लिए ज़रूरी हर चीज़ जाँचना शुरू कर देता है: दस्तावेज़, रिकॉर्ड, अधिकारी की मंज़ूरी, काउंटर पर नकद और संयुक्त खाताधारक। सारी जाँच पूरी होने पर ही आपको बुलाया जाता है। कुछ कमी हो तो काउंटर पहुँचने से पहले ही तुरंत पता चल जाता है।',
 'ix.cta1':'▶ ग्राहक डेमो आज़माएँ','ix.cta2':'निष्पक्षता सीमा लाइव देखें',
-'ix.pill1':'✓ तैयारी की जाँच','ix.pill2':'⚖ पक्की निष्पक्षता सीमा','ix.pill3':'🎟 काग़ज़ी टोकन + QR','ix.pill4':'📺 लॉबी TV + आवाज़','ix.pill5':'💬 बैंक मेंटर','ix.pill6':'🇮🇳 हिंदी + आसान मोड',
+'ix.pill1':'✓ तैयारी की जाँच','ix.pill2':'⚖ पक्की निष्पक्षता सीमा','ix.pill3':'🎟 काग़ज़ी टोकन + QR','ix.pill4':'📺 लॉबी TV + आवाज़','ix.pill5':'💬 बैंक मेंटर','ix.pill6':'🇮🇳 हिंदी + आवाज़',
 'ix.ph.svc':'नकद निकासी · ₹3,00,000','ix.ph.chip':'जाँच जारी · लगभग 6 मिनट',
 'ix.ph.d1':'अंक, शब्द और हस्ताक्षर','ix.ph.d2':'बैलेंस ठीक · हस्ताक्षर नमूना तैयार','ix.ph.d3':'₹2,00,000 की कैशियर सीमा से ज़्यादा','ix.ph.d4':'दराज़ और नोटों की जाँच','ix.ph.l5':'संयुक्त खाताधारक मौजूद','ix.ph.d5':'SyncToken हाज़िरी','ix.ph.note':'उदाहरण स्क्रीन (सिमुलेशन)',
 'ix.fc1':'<b>अगला: WhatsApp संदेश</b>"C-19, आप तैयार हैं। काउंटर 2 पर जाएँ"','ix.fc2':'<b>Fair-Skip</b>किसी को भी K बार से ज़्यादा पीछे नहीं किया जाता',
@@ -457,7 +457,7 @@ function setLang(l,silent){l=l==='hi'?'hi':'en';if(l===lang&&!silent)return;lang
 function setEasy(v){easy=!!v;try{localStorage.setItem(LS_EASY,easy?'1':'0')}catch(e){}syncEasy()}
 function syncEasy(){if(document.body)document.body.classList.toggle('easy',easy);document.querySelectorAll('.easy-btn').forEach(b=>{b.classList.toggle('on',easy);b.setAttribute('aria-pressed',easy)})}
 window.addEventListener('storage',e=>{if(e.key===LS_LANG&&e.newValue&&e.newValue!==lang){lang=e.newValue==='hi'?'hi':'en';syncDoc();apply();langListeners.forEach(f=>f(lang))}
-  if(e.key===LS_EASY){easy=e.newValue==='1';syncEasy()}});
+});
 
 /* ---- speech ---- */
 const canSpeak='speechSynthesis' in window;

@@ -8,8 +8,7 @@ const PAGES=[['index.html','index','🏠'],['demo.html','demo','🎟'],['status.
 const brand=()=>MARK+'<span>ReadyLane<small>'+t('brand.by')+'</small></span>';
 function tools(){
   return '<div class="nav-tools"><div class="lang-toggle" role="group" aria-label="Language / भाषा">'+
-   '<button type="button" data-lang="en" lang="en" aria-label="English">EN</button><button type="button" data-lang="hi" lang="hi" aria-label="हिंदी">हिंदी</button></div>'+
-   '<button type="button" class="easy-btn" aria-pressed="'+RL.easy+'" aria-label="'+t('nav.easyAria')+'" title="'+t('nav.easyAria')+'"><span aria-hidden="true">👁</span> <span>'+t('nav.easy')+'</span></button></div>';
+   '<button type="button" data-lang="en" lang="en" aria-label="English">EN</button><button type="button" data-lang="hi" lang="hi" aria-label="हिंदी">हिंदी</button></div></div>';
 }
 function nav(){
   const here=(location.pathname.split('/').pop()||'index.html');
@@ -22,7 +21,6 @@ function nav(){
    tools()+'<button class="nav-toggle" aria-label="'+t('nav.menu')+'" aria-expanded="'+(!!open)+'">☰</button></div>';
   el.querySelector('.nav-toggle').onclick=e=>{const o=el.querySelector('.nav-links').classList.toggle('open');e.currentTarget.setAttribute('aria-expanded',o)};
   el.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{RL.setLang(b.dataset.lang);toast('sys',t('lang.switched'),'')});
-  el.querySelector('.easy-btn').onclick=()=>RL.setEasy(!RL.easy);
   RL.syncUI();
 }
 function footer(){
